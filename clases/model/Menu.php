@@ -6,6 +6,8 @@
 		protected $padre;
 		protected $contenido;
 		protected $hijos;
+		protected $orden;
+		protected $usuario;
 		
 		public function __construct($datos = null)
 		{
@@ -13,49 +15,54 @@
 			$this->pk['idMenu'] = 'auto';
 			$this->fk['padre'] = new FK('Menu', ManyToOne, 'idPadre', 'idMenu');
 			$this->fk['contenido'] = new FK('Contenido', ManyToOne, 'idContenido');
-			$this->fk['hijos'] = new FK('Menu', OneToMany, 'idPadre', null, 'titulo');
+			$this->fk['hijos'] = new FK('Menu', OneToMany, 'idPadre', null, 'orden');
+			$this->fk['usuario'] = new FK('Usuario', ManyToOne, 'idUsuario');
 		}
 		
-		public function get_enlace()
+		public function enlace()
 		{
 			$enlace = null;
-			if (!$menu->contenido and count($menu->hijos) > 0)
+			if (!$this->contenido() and count($this->hijos()) > 0)
 			{
-				if ($menu->padre)
+				if ($this->padre())
 				{
-					if (($enlace = $this->menuService->getEnlaceContenido($menu->padre)) === false)
+					if (($enlace = $this->enlace_contenido($this->hijos(0))) === false)
 						return 'error';
-					if ($enlace != '')
-						$enlace = trim($enlace);
-					else
-						$enlace = '#';
 				}
-			}
-			if (!$enlace)
-			{
-				if (($enlace = $this->menuService->getEnlaceContenido($menu)) === false)
-					return 'error';
-				if ($enlace != '')
-					$enlace = trim($enlace);
 				else
 					$enlace = '#';
 			}
-			$menu->enlace = $enlace;
+			if (!$enlace)
+			{
+				if (($enlace = $this->enlace_contenido($this)) === false)
+					return 'error';
+			}
+			return $enlace;
 		}
 		
-		private function getEnlaceContenido(Menu $menu)
-		{	
-			if (!$menu->contenido)
+		public function enlace_contenido(Menu $menu)
+		{
+			if (!$menu->contenido())
 				$enlace = '';
 			else
 			{
 				if ($menu->contenido->permalink)
-					$enlace = $_SESSION['config']->getPathApp() . '/' . $menu->contenido->permalink;
+				{
+					$enlace = URL_APP . $menu->contenido->permalink;
+				}
 				else
-					$enlace = $_SESSION['config']->getPathApp() . '/?referencia=' . $menu->contenido->referencia;
-				if ($menu->padre)
+				{
+					$enlace = URL_APP . '?referencia=' . $menu->contenido->referencia;
+				}
+				if ($menu->padre())
+				{
 					 $enlace .= '&amp;idMenu=' . $menu->padre->idMenu;
+				}
 			}
+			if ($enlace != '')
+				$enlace = trim($enlace);
+			else
+				$enlace = '#';
 			return($enlace);
 		}
 	}
