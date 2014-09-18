@@ -5,43 +5,42 @@
 			$amp = '&';
 		else
 			$amp = '&amp;';
-		if ($params and is_array($params) and count($params) > 0)
-			foreach ($params as $nombre => $valor)
-				$action .= $amp . $nombre . '=' . $valor;
-		return '?action=' . $action;
+		if ($params and is_array($params))
+		{
+			$numParams = count($params);
+			if ($numParams > 0)
+			{
+				$action .= '?';
+				$cont = 1;
+				foreach ($params as $nombre => $valor)
+				{
+					$action .= $nombre . '=' . $valor;
+					if ($cont++ < $numParams)
+						$action .= $amp;
+				}
+			}
+		}
+		return URL_APP . $action;
 	}
 	
-	function carga($action, $id = null, $params = null)
+	function carga($action, $id = null, $params = null, $funcion = null)
 	{
 		if (!$action)
 			return false;
 		if (!$id)
 			$id = $action;
 		$action = link_action($action, $params, true);
-		//TODO if (isset($_SESSION['javascript']) or $action == link_action('activa_javascript'))
-		if (true)
-		{
-?>
-			<script type="text/javascript">
-				<!--
-				carga('<?php echo Config::pathApp(); ?><?php echo $action; ?>', '<?php echo $id; ?>');
-				//-->
-			</script>
-<?php
-		}
+		if (!$funcion)
+			$funcion = 'null';
 		else
-		{
-			$url = Config::hostApp() . $_SESSION['config']->getPathApp() . $action;
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
-			$html = curl_exec($ch);
-			curl_close($ch);
-			if ($html)
-				echo $html;
-		}
+			$funcion = "'$funcion'";
+?>
+		<script type="text/javascript">
+			<!--
+			carga('<?php echo $action; ?>', '<?php echo $id; ?>', <?php echo $funcion; ?>);
+			//-->
+		</script>
+<?php
 		return true;
 	}
 	
@@ -56,7 +55,7 @@
 	{
 		$action = link_action($action, $params, true);
 		?><a href="<?php if ($pregunta) echo 'javascript:'; else echo $action; ?>"<?php if ($dest) { 
-				?> onclick="<?php if ($pregunta) echo 'if (pregunta(\'' . htmlentities($pregunta) . '\')) '; 
+				?> onclick="<?php if ($pregunta) echo 'if (pregunta(\'' . formato_html($pregunta) . '\')) '; 
 				?>carga('<?php echo $action; ?>', '<?php echo $dest; ?>', <?php 
 				if ($funcion) echo '\'' . str_replace('"', "\'", $funcion) 
 				. '\''; else echo 'null'; ?>, null<?php if ($ocultar) { ?>, true<?php } ?><?php 
@@ -77,26 +76,14 @@
 			return false;
 		if (!$id)
 			$id = $action;
-		//TODO if (isset($_SESSION['javascript']) or $action == 'activa_javascript')
-		if (true)
-		{
 ?>
-			<script type="text/javascript">
-				carga_rotativa('<?php vlink($action); ?>', <?php echo $tiempo; ?>, '<?php echo $id; ?>');
-			</script>
+		<script type="text/javascript">
+			carga_rotativa('<?php vlink($action); ?>', <?php echo $tiempo; ?>, '<?php echo $id; ?>');
+		</script>
 <?php
-		}
-		else
-		{
-			$url = Config::hostApp() . $_SESSION['config']->getPathApp() . link_action($action);
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
-			$html = curl_exec($ch);
-			curl_close($ch);
-			if ($html)
-				echo $html;
-		}
+	}
+	
+	function formato_html($texto)
+	{
+		return htmlentities($texto, ENT_XHTML, 'ISO-8859-1');
 	}

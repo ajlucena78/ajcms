@@ -6,14 +6,28 @@
 		protected $extension;
 		protected $tam;
 		protected $tipo;
-		protected $orden;
-		protected $alineamiento;
-		protected $contenido;
+		private $ampliable;
+		private $tmp_dir;
 		
 		public function __construct($datos = null)
 		{
 			parent::__construct($datos);
 			$this->pk['idImagen'] = 'auto';
-			$this->fk['contenido'] = new FK('Contenido', ManyToOne, 'idContenido');
+		}
+		
+		public function ampliable($val = null)
+		{
+			if ($val !== null)
+				$this->ampliable = $val;
+			else
+				return $this->ampliable;
+		}
+		
+		public function tmp_dir($val = null)
+		{
+			if ($val !== null)
+				$this->tmp_dir = $val;
+			else
+				return $this->tmp_dir;
 		}
 	}
