@@ -1,0 +1,1 @@
+document.write("<fb:like show_faces=\"false\" width=\"600\" font=\"verdana\"></fb:like>");

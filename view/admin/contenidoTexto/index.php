@@ -54,10 +54,10 @@
 									</td>
 									<td><?php echo $contenido->referencia; ?></td>
 									<td>
-										<?php //TODO mostrar los menus a los que apunta el contenido si hay
+										<?php //mostrar los menus a los que apunta el contenido si hay
 										/*
 										<?php if ($contenido->menus) { ?>
-											<?php echo htmlentities($contenido->menus->titulo); ?>
+											<?php echo formato_html($contenido->menus->titulo); ?>
 										<?php } ?>
 										*/ ?>
 									</td>
@@ -87,6 +87,6 @@
 		<script type="text/javascript">
 			document.getElementById("descripcion").focus();
 		</script>
-		<?php include $_SESSION['config']->getPathView() . '/includes/admin/pie_admin.php'; ?>
+		<?php include $_SESSION['config']->getPathView() . 'includes/admin/pie_admin.php'; ?>
 	</body>
 </html>

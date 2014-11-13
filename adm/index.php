@@ -1,2 +1,2 @@
 <?php
-	header("Location:../?action=consulta_contenidos_texto");
+	header('Location:../?action=contenidos-texto');
