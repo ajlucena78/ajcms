@@ -1,16 +1,13 @@
 <meta content="application/xhtml+xml;charset=ISO-8859-1" http-equiv="Content-Type" />
-<link href="<?php echo $_SESSION['config']->getPathApp(); ?>/view/css/admin.css" rel="stylesheet" 
-		type="text/css" />
-<script type="text/javascript" src="<?php echo $_SESSION['config']->getPathApp(); 
-		?>/view/js/funciones_capas.js"></script>
-<script type="text/javascript" src="<?php echo $_SESSION['config']->getPathApp(); ?>/view/js/loader.js"></script>
+<link href="<?php echo URL_RES; ?>css/admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo URL_RES; ?>js/funciones_capas.js"></script>
+<script type="text/javascript" src="<?php echo URL_RES; ?>js/loader.js"></script>
 <?php
 	if (!isset($INCLUYE_TINYMCE))
 		$INCLUYE_TINYMCE = false;
 	if ($INCLUYE_TINYMCE) { ?>
 	<!-- tinyMCE -->
-	<script type="text/javascript" src="<?php echo $_SESSION['config']->getPathApp(); 
-			?>/view/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+	<script type="text/javascript" src="<?php echo URL_RES; ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 	<script type="text/javascript">
 		tinyMCE.init({
 			mode : "textareas",
@@ -26,7 +23,7 @@
 					theme_advanced_toolbar_location : "top",
 					theme_advanced_toolbar_align : "left",
 					theme_advanced_statusbar_location : "bottom",
-					content_css : "<?php echo $_SESSION['config']->getPathApp(); ?>/view/css/style.css",
+					content_css : "<?php echo URL_RES; ?>css/style.css",
 							plugin_insertdate_dateFormat : "%d/%m/%Y",
 							plugin_insertdate_timeFormat : "%H:%M:%S",
 							theme_advanced_resize_horizontal : false,
@@ -58,12 +55,10 @@
 			</script>
 	<!-- /tinyMCE -->
 <?php } ?>
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $_SESSION['config']->getPathApp(); 
-		?>/view/js/jscalendar-1.0/calendar-fps.css" />
-<script type="text/javascript" src="<?php echo $_SESSION['config']->getPathApp(); 
-		?>/view/js/flowplayer-3.2.4.min.js"></script>
-<!-- <link rel="stylesheet" type="text/css" href="<?php echo $_SESSION['config']->getPathApp(); 
-		?>/view/css/flowplayer.css"> -->
+<link rel="stylesheet" type="text/css" media="all" 
+		href="<?php echo URL_RES; ?>js/jscalendar-1.0/calendar-fps.css" />
+<script type="text/javascript" src="<?php echo URL_RES; ?>js/flowplayer-3.2.4.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo URL_RES; ?>css/flowplayer.css"> -->
 <style type="text/css">
 	a.myPlayer
 	{
