@@ -151,4 +151,10 @@
 			}
 			return 'success';
 		}
+		
+		public function index()
+		{
+			$this->menus = $this->menuService->menus_index();
+			return 'success';
+		}
 	}

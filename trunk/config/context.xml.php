@@ -1,11 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?php
+	if (!isset($XML_KEY) or $XML_KEY != date('Ymdh'))
+		exit();
+	echo '<?xml version="1.0" encoding="UTF-8"?>';
+?>
 <context>
-	<appname>PUBLICAR</appname>
+	<appname>MI WEB</appname>
 	<!-- Origen de datos -->
     <db>
-        <url value="mysql:dbname=ubipol;host=localhost" />
-        <username value="root" />
-        <password value="bioh" />
+        <url value="mysql:dbname=datos;host=localhost" />
+        <username value="usuario" />
+        <password value="clave" />
     </db>
 	<!-- Services -->
 	<service id="menuService" class="MenuService" />

@@ -10,6 +10,8 @@
 			if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone)/i',strtolower($_SERVER['HTTP_USER_AGENT']))){
 			    $mobile_browser++;
 			}
+			if (stripos($_SERVER['HTTP_USER_AGENT'], 'mobile') !== false)
+				$mobile_browser++;
 			
 			//$_SERVER['HTTP_ACCEPT'] -> Indica los tipos MIME que el cliente puede recibir. 
 			if((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml')>0) or

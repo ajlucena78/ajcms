@@ -263,12 +263,28 @@
 					{
 						return 'mensajes';
 					}
+					elseif ($this->contenido->tipo == CONTENIDO_OFERTA)
+					{
+						return 'ofertas';
+					}
 					else
 					{
 						return 'paginas';
 					}
 				}
 			}
+			return 'success';
+		}
+		
+		public function mas_fotos_movil()
+		{
+			if (!isset($_GET['id']) or !($_GET['id'] + 0))
+				return 'error';
+			if (!isset($_GET['cont']) or !($_GET['cont'] + 0))
+				return 'error';
+			$this->contenido = $this->contenidoTextoService->findById($_GET['id']);
+			if (!$this->contenido)
+				return 'error';
 			return 'success';
 		}
 	}

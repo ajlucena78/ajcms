@@ -72,13 +72,13 @@
 				}
 				if (!$video->tam)
 				{
-					$this->error = 'Falta el tamaño de la video';
+					$this->error = 'Falta el tamaño del video';
 					return false;
 				}
 				if (strtoupper($video->extension) != 'FLV' or ($video->tipo != 'video/x-flv' 
-						and $video->tipo != 'application/octet-stream'))
+						and $video->tipo != 'application/octet-stream' and $video->tipo != 'application/octet-st'))
 				{
-					$this->error = 'El vídeo debe estar en formato FLV';
+					$this->error = 'El video debe estar en formato FLV';
 					return false;
 				}
 			}
