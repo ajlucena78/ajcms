@@ -363,4 +363,126 @@
 			}
 			return $html;
 		}
+		
+		public function texto_procesado_movil($ruta = null, $rutaFisica = null)
+		{
+			if (!$ruta)
+				$ruta = URL_APP;
+			if (!$rutaFisica)
+				$rutaFisica = APP_ROOT;
+			$html = $this->texto;
+			$html = trim(str_replace('[video]', '', $html));
+			$pos = 0;
+			$contDivImagenes = 1;
+			$imagenes = $this->imagenes();
+			$maxHeight = 0;
+			$contImg = 0;
+			for ($i = 0; $i < count($imagenes); $i++)
+			{
+				$imagen = $imagenes[$i];
+				if (!$imagen)
+					break;
+				$directorio = floor($imagen->idImagen / 1000);
+				$rutaImagen = $rutaFisica . '/res/upload/' . $directorio . '/' . $imagen->idImagen 
+						. '.' . $imagen->extension;
+				//pintar la imagen o imágenes
+				//cuantas imágenes pintar en la capa contando todas las consecutivas y pintar así la capa
+				$nImagenesPintar = 0;
+				$pos = strpos($html, '[imagen]', $pos);
+				if ($pos === false)
+					break;
+				$nImagenesPintar++;
+				$posAux = $pos;
+				do
+				{
+					$pos += 8;
+					if ($pos > (strlen($html) - 8))
+						break;
+					if (substr($html, $pos, 8) != '[imagen]')
+						break;
+					$nImagenesPintar++;
+				}
+				while (true);
+				$htmlImagen = '';
+				for ($cont = 0; $cont < $nImagenesPintar; $cont++)
+				{
+					$htmlImagen .= $this->imagen_movil($imagen, $contImg);
+					//si hay más de una imagen
+					if ($nImagenesPintar > 1 and $cont < ($nImagenesPintar - 1))
+					{
+						$i++;
+						if (!isset($imagenes[$i]))
+							break;
+						$imagen = $imagenes[$i];
+						if (!$imagen)
+							break;
+					}
+					$contImg++;
+					if ($contImg % 2 == 0)
+						$htmlImagen .= '<div style="clear: both;"></div>';
+				}
+				$htmlImagen .= '<div style="clear: both;"></div>';
+				//se cambia la info
+				$pos = $posAux;
+				$html = substr_replace($html, $htmlImagen, $pos, (8 * $nImagenesPintar));
+				$pos += strlen($htmlImagen);
+			}
+			//el resto de fotos no colocadas anteriormente se ubican al final
+			$html .= $this->mostrar_imagenes($contImg, $ruta, $rutaFisica);
+			return $html;
+		}
+		
+		private function imagen_movil($imagen, $contImg)
+		{
+			$ruta = URL_APP;
+			$rutaFisica = APP_ROOT;
+			$directorio = floor($imagen->idImagen / 1000);
+			$rutaImagen = $rutaFisica . '/res/upload/' . $directorio . '/' . $imagen->idImagen . '.' 
+					. $imagen->extension;
+			list($w, $h) = @getimagesize($rutaImagen);
+			if ($h > $w)
+				$tam = 50;
+			else
+				$tam = 100;
+			$html = '<div style="font-size: 0.8em; text-align: center; float: left;"' . ' id="foto_' 
+					. $contImg . '">';
+			$html .= '<img src="' . $ruta . 'res/upload/' . $directorio . '/' . $imagen->idImagen . '.' 
+					. $imagen->extension . '" alt="' . formato_html($imagen->titulo) . '" style="width: ' 
+					. $tam . '%;" class="foto" />';
+			$html .= '<br />' . ++$contImg . '. ' . formato_html($imagen->titulo) . "\n<br />&nbsp;</div>";
+			return $html;
+		}
+		
+		public function mostrar_imagenes(& $contImg)
+		{
+			$html = '';
+			$imagenes = $this->imagenes();
+			$cont = $contImg - 1;
+			for ($i = $contImg; $i < count($imagenes); $i++)
+			{
+				$imagen = $imagenes[$i];
+				if (!$imagen)
+					break;
+				$html .= $this->imagen_movil($imagen, $contImg);
+				$contImg++;
+				if ($contImg % 2 == 0)
+					$html .= '<div style="clear: both;"></div>';
+				if ($contImg > NUM_FOTOS_MOVIL + $cont)
+				{
+					if ($contImg < count($imagenes))
+					{
+						$html .= '<div id="mas_fotos" style="text-align: center; margin: 0; padding: 0;"></div>';
+						$html .= '<div id="ver_mas_fotos_' . $contImg . '" class="texto_cen"';
+						$html .= ' onclick="ocultar_obj(\'ver_mas_fotos_' . $contImg . '\');"><a href="' 
+								. vlinkAjax('mas-fotos', 'mas_fotos'
+								, array('id' => $this->idContenido, 'cont' => $contImg), false, 'reloadwin'
+								, true) . '" class="boton">CARGAR M&Aacute;S FOTOS</a>';
+						$html .= '</div>';
+					}
+					break;
+				}
+			}
+			$html .= '<div style="clear: both;"></div>';
+			return $html;
+		}
 	}

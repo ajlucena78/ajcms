@@ -1,4 +1,8 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?php
+	if (!isset($XML_KEY) or $XML_KEY != date('Ymdh'))
+		exit();
+	echo '<?xml version="1.0" encoding="UTF-8"?>';
+?>
 <packages>
 	<package name="contenido">
     	<action name="index" method="index" class="contenidoAction">
@@ -14,6 +18,7 @@
             <result name="enlaces">enlaces</result>
             <result name="mensajes">mensajes</result>
             <result name="paginas">contenidos-texto</result>
+            <result name="ofertas">ofertas</result>
         </action>
 	</package>
 	<package name="contenido-texto">
@@ -184,6 +189,9 @@
             <result name="success">gracias.php</result>
             <result name="error">contacto.php</result>
             <result name="fatal">error.php</result>
+        </action>
+        <action name="localizacion-sevilla" method="mapa" class="publicAction" frame="movil">
+            <result name="success">mapa.php</result>
         </action>
 	</package>
 	<package name="usuario">

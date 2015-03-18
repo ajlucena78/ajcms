@@ -40,11 +40,17 @@
 			$mensaje .= 'Email: ' . $_POST['email'] . "\n";
 			$mensaje .= "\n" . $_POST['comentario'] . "\n";
 			if (!@mail('publicar@publicar.es', 'Consulta de ' . $_POST['nombre'], $mensaje
-					, 'From: Formulario de contacto UBIPOL<info@publicar.es>'))
+					, 'From: Formulario de contacto<info@publicar.es>'))
 			{
 				$this->error = 'El envío no se ha podido realizar en este momento, intente más tarde por favor';
 				return 'fatal';
 			}
+			return 'success';
+		}
+		
+		public function mapa()
+		{
+			$this->menus = $this->menuService->menus_index();
 			return 'success';
 		}
 	}
