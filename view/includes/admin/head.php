@@ -1,4 +1,4 @@
-<meta content="application/xhtml+xml;charset=ISO-8859-1" http-equiv="Content-Type" />
+<meta content="application/xhtml+xml;charset=utf-8" http-equiv="Content-Type" />
 <link href="<?php echo URL_RES; ?>css/admin.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<?php echo URL_RES; ?>js/funciones_capas.js"></script>
 <script type="text/javascript" src="<?php echo URL_RES; ?>js/loader.js"></script>

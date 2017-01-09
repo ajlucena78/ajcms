@@ -265,3 +265,9 @@ function convierte_numero(num)
 {
 	return String(Math.round(num * 100) / 100).replace('.', ',');
 }
+
+function uni_key_code(event)
+{
+    var key = event.keyCode;
+    return key;
+}

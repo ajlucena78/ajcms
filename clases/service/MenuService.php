@@ -1,16 +1,17 @@
 <?php
+	require_once APP_ROOT . 'clases/util/Cadena.php';
 	class MenuService extends Service
-	{
+	{	
 		public function valida(Menu $menu)
 		{
 			if (!$menu->titulo)
 			{
-				$this->error = 'Falta el título del menú';
+				$this->error = 'Falta el tÃ­tulo del menÃº';
 				return false;
 			}
 			if (!$menu->orden)
 			{
-				$this->error = 'Falta el orden del menú';
+				$this->error = 'Falta el orden del menÃº';
 				return false;
 			}
 			return true;
@@ -21,19 +22,19 @@
 			$menuAux = new Menu();
 			$menuAux->padre = new Menu();
 			$menuAux->padre->idMenu = 'null';
-			return $this->find($menuAux);
+			return $this->find($menuAux, null, 'orden');
 		}
 		
 		public function subir(Menu $menu)
 		{
 			if (!$menu->idMenu)
 			{
-				$this->error = 'Debe indicar el identificador del menú a subir';
+				$this->error = 'Debe indicar el identificador del menÃº a subir';
 				return false;
 			}
 			if (!$menu = $this->findById($menu->idMenu))
 			{
-				$this->error = 'No se encuentra el menú elegido';
+				$this->error = 'No se encuentra el menÃº elegido';
 				return false;
 			}
 			if ($menu->orden == 1)
@@ -50,7 +51,7 @@
 			$menuAnterior->orden = $menu->orden;
 			if (!$menuAnterior = $this->find($menuAnterior))
 			{
-				$this->error = 'No se encuentra el menú anterior al elegido';
+				$this->error = 'No se encuentra el menÃº anterior al elegido';
 				return false;
 			}
 			$menuAnterior = $menuAnterior[0];
@@ -85,12 +86,12 @@
 		{
 			if (!$menu->idMenu)
 			{
-				$this->error = 'Debe indicar el identificador del menú a bajar';
+				$this->error = 'Debe indicar el identificador del menÃº a bajar';
 				return false;
 			}
 			if (!$menu = $this->findById($menu->idMenu))
 			{
-				$this->error = 'No se encuentra el menú elegido';
+				$this->error = 'No se encuentra el menÃº elegido';
 				return false;
 			}
 			$menu->orden = $menu->orden + 1;
@@ -103,7 +104,7 @@
 			$menuSiguiente->orden = $menu->orden;
 			if (!$menuSiguiente = $this->find($menuSiguiente))
 			{
-				$this->error = 'No se encuentra el menú siguiente al elegido';
+				$this->error = 'No se encuentra el menÃº siguiente al elegido';
 				return false;
 			}
 			$menuSiguiente = $menuSiguiente[0];
@@ -148,7 +149,7 @@
 			}
 			if (!$res = $consulta->lee_registro())
 			{
-				$this->error = 'No se ha podido obtener el número de submenus';
+				$this->error = 'No se ha podido obtener el nÃºmero de submenus';
 				return false;
 			}
 			$consulta->libera();
@@ -175,5 +176,46 @@
 				$orden = 1;
 			$consulta->libera();
 			return $orden;
+		}
+		
+		public function remove(Menu $menu)
+		{
+			$menu->padre;
+			if (!$this->transaccion)
+			{
+				$this->inicia_transaccion();
+			}
+			$res = parent::removeById($menu->idMenu);
+			if ($res === false or is_null($res))
+			{
+				if ($this->transaccion)
+				{
+					$this->cancela_transaccion();
+				}
+				return false;
+			}
+			//se hace preciso restar uno al orden de los menus que vayan detras del borrado
+			$sql = 'update Menu set orden = orden - 1 where idPadre ';
+			if (!$menu->padre)
+				$sql .= 'is null';
+			else
+				$sql .= '= ' . $menu->padre->idMenu;
+			$sql .= ' and orden > ' . $menu->orden;
+			if (self::$conexion->ejecuta($sql) === false)
+			{
+				$this->error = self::$conexion->error();
+				if ($this->transaccion)
+				{
+					$this->cancela_transaccion();
+				}
+				return false;
+			}
+			if ($this->transaccion and !$this->cierra_transaccion())
+			{
+				$this->error = self::$conexion->error();
+				$this->cancela_transaccion();
+				return false;
+			}
+			return true;
 		}
 	}

@@ -27,8 +27,8 @@ function activa_form_menu(id)
 
 function borrar_menu(id)
 {
-	if (window.confirm('¿Borrar esta opción de menú?\nImportante: Todos los submenús que '
-			+ 'dependan de la misma también serán borrados.'))
+	if (window.confirm('Â¿Borrar esta opciÃ³n de menÃº?\nImportante: Todos los submenÃºs que '
+			+ 'dependan de la misma tambiÃ©n serÃ¡n borrados.'))
 	{
 		var form = document.getElementById('formMenu' + id);
 		form.guardar.value = 0;

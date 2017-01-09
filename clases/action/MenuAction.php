@@ -3,6 +3,7 @@
 	{
 		protected $menuService;
 		protected $contenidoService;
+		protected $contenidoTextoService;
 		protected $menu;
 		protected $contenidos;
 		protected $menus;
@@ -13,10 +14,21 @@
 		public function consulta()
 		{
 			$this->usuarioService->check_usuario();
-			if (!isset($_GET['idPadre']))
+			if (!isset($_GET['idPadre']) and !isset($_POST['idPadre']))
+			{
 				$this->idPadre = 0;
+			}
 			else
-				$this->idPadre = $_GET['idPadre'];
+			{
+				if (isset($_POST['idPadre']))
+				{
+					$this->idPadre = $_POST['idPadre'];
+				}
+				else
+				{
+					$this->idPadre = $_GET['idPadre'];
+				}
+			}
 			if ($this->idPadre)
 			{
 				$this->menuPadre = $this->menuService->findById($this->idPadre);
@@ -27,7 +39,7 @@
 				}
 				if (!$this->menuPadre)
 				{
-					$this->error = 'No se encuentra el menú superior para el ID: ' . $this->idPadre;
+					$this->error = 'No se encuentra el menÃº superior para el ID: ' . $this->idPadre;
 					return 'fatal';
 				}
 			}
@@ -40,6 +52,11 @@
 			if (isset($_POST['alta']))
 			{
 				$this->menu = new Menu($_POST);
+				if (isset($_POST['idPadre']) and $_POST['idPadre'])
+				{
+					$this->menu->padre = new Menu();
+					$this->menu->padre->idMenu = $_POST['idPadre'];
+				}
 				$this->menu->usuario = $_SESSION['usuario'];
 				$this->menu->orden = $this->menuService->max_orden($this->menu);
 				if ($this->idPadre)
@@ -57,26 +74,27 @@
 					$this->error = $this->menuService->error();
 					return 'error';
 				}
-				if (!$this->menuService->save($this->menu))
+				$id = $this->menuService->save($this->menu);
+				if (!$id)
 				{
 					$this->error = $this->menuService->error();
-					return 'error';
+					return 'fatal';
 				}
 				$this->menu = new Menu();
 			}
-			//edición
+			//ediciÃ³n
 			if (isset($_POST['guardar']) and $_POST['guardar'])
 			{
 				$this->menu = $this->menuService->findById($_POST['idMenu']);
 				if (!$this->menu)
 				{
-					$this->error = 'El menú a editar no se encuentra';
+					$this->error = 'El menÃº a editar no se encuentra';
 					return 'error';
 				}
 				$this->menu->titulo = trim($_POST['titulo']);
+				$this->menu->contenido = new Contenido();
 				if ($_POST['idContenido'])
 				{
-					$this->menu->contenido = new Contenido();
 					$this->menu->contenido->idContenido = $_POST['idContenido'];
 				}
 				if (!$this->menuService->valida($this->menu))
@@ -96,14 +114,21 @@
 			{
 				if (!isset($_POST['idMenu']) or !($_POST['idMenu'] += 0))
 				{
-					$this->error = 'No se ha reportado el ID del menú a borrar';
+					$this->error = 'No se ha reportado el ID del menÃº a borrar';
 					return 'error';
 				}
-				if (!$this->menuService->removeById($_POST['idMenu']))
+				$this->menu = $this->menuService->findById($_POST['idMenu']);
+				if (!$this->menu)
+				{
+					$this->error = 'El menÃº a editar no se encuentra';
+					return 'error';
+				}
+				if (!$this->menuService->remove($this->menu))
 				{
 					$this->error = $this->menuService->error();
-					return 'error';
+					return 'fatal';
 				}
+				$this->menu = new Menu();
 			}
 			//subir
 			if (isset($_POST['subir']) and $_POST['subir'] == 1)

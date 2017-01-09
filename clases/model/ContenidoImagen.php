@@ -6,6 +6,7 @@
 		protected $orden;
 		protected $alineamiento;
 		protected $tamano;
+		protected $oculta;
 		
 		public function __construct($datos = null)
 		{

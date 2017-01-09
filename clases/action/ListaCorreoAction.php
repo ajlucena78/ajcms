@@ -8,6 +8,11 @@
 		public function consulta()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_GET['nombre_lista_correo']))
 				$_SESSION['nombre_lista_correo'] = trim($_GET['nombre_lista_correo']);
 			else
@@ -36,6 +41,11 @@
 		public function alta()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'fatal';
+			}
 			$this->lista = new ListaCorreo($_POST);
 			if (isset($_POST['guardar']))
 			{
@@ -58,6 +68,11 @@
 		public function edicion()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'fatal';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$idListaCorreo = $_POST['id'];
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
@@ -82,7 +97,7 @@
 			if ($this->lista === false)
 			{
 				$this->error = $this->listaCorreoService->error();
-					return 'fatal';
+				return 'fatal';
 			}
 			if (!$this->lista)
 			{
@@ -95,6 +110,11 @@
 		public function baja()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id_lista_correo = $_POST['id'];
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
@@ -123,6 +143,35 @@
 					return 'error';
 				}
 				return 'ok';
+			}
+			return 'success';
+		}
+		
+		public function exportar()
+		{
+			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'fatal';
+			}
+			if (isset($_GET['id']) and $_GET['id'] > 0)
+				$id = $_GET['id'];
+			else
+			{
+				$this->error = 'Falta el dato ID a enviar por GET';
+				return 'error';
+			}
+			$this->lista = $this->listaCorreoService->findById($id);
+			if ($this->lista === false)
+			{
+				$this->error = $this->listaCorreoService->error();
+				return 'error';
+			}
+			if (!$this->lista)
+			{
+				$this->error = 'No se encuentra la lista de correo indicada';
+				return 'error';
 			}
 			return 'success';
 		}

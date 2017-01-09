@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	if (!isset($XML_KEY) or $XML_KEY != date('Ymdh'))
 		exit();
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -8,9 +8,13 @@
     	<action name="index" method="index" class="contenidoAction">
             <result name="success">index.php</result>
             <result name="error">error.php</result>
+            <result name="imagen" frame="index">imagen.php</result>
+            <result name="login">inicio-sesion</result>
         </action>
-	</package>
-	<package name="contenido">
+        <action name="sitemap" method="sitemap" class="contenidoAction">
+            <result name="success">sitemap.php</result>
+            <result name="error">error.php</result>
+        </action>
 		<action name="baja-contenido" method="baja" class="contenidoAction" frame="admin">
 			<result name="success">admin/contenido/baja_contenido.php</result>
             <result name="error">admin/contenido/baja_contenido.php</result>
@@ -27,7 +31,7 @@
             <result name="error">admin/error.php</result>
         </action>
         <action name="alta-contenido-texto" method="alta" class="contenidoTextoAction" frame="admin">
-            <result name="success">admin/contenidoTexto/alta_pagina.php</result>
+            <result name="success">edicion-contenido-texto</result>
             <result name="error">admin/contenidoTexto/alta_pagina.php</result>
             <result name="fatal">admin/error.php</result>
         </action>
@@ -35,6 +39,7 @@
             <result name="success">admin/contenidoTexto/edicion_pagina.php</result>
             <result name="error">admin/contenidoTexto/edicion_pagina.php</result>
             <result name="fatal">admin/error.php</result>
+            <result name="menus">menus</result>
         </action>
         <action name="buscar" method="buscador" class="contenidoTextoAction" frame="index">
             <result name="success">buscador.php</result>
@@ -64,11 +69,16 @@
             <result name="success">admin/menu/index_menus.php</result>
             <result name="error">admin/menu/index_menus.php</result>
             <result name="fatal">admin/error.php</result>
+            <result name="contenido">edicion-contenido-texto</result>
         </action>
     </package>
 	<package name="imagen">
 		<action name="ver_imagen" method="show" class="imagenAction" frame="index">
             <result name="success">imagen.php</result>
+            <result name="error">error.php</result>
+        </action>
+        <action name="sitemap-imagenes" method="sitemap" class="imagenAction">
+            <result name="success">sitemap-imagenes.php</result>
             <result name="error">error.php</result>
         </action>
 	</package>
@@ -147,41 +157,45 @@
             <result name="error">admin/error.php</result>
             <result name="ok">listas-correo</result>
         </action>
-        <action name="buscar-email" method="email" class="CorreoAction" frame="admin">
+        <action name="buscar-email" method="email" class="correoAction" frame="admin">
             <result name="success">admin/correo/buscar_email.php</result>
             <result name="error">admin/error.php</result>
         </action>
-        <action name="ver-email" method="ver_email" class="CorreoAction" frame="admin">
+        <action name="ver-email" method="ver_email" class="correoAction" frame="admin">
             <result name="success">admin/correo/ver_email.php</result>
             <result name="error">admin/error.php</result>
         </action>
-        <action name="baja-correo" method="baja" class="CorreoAction" frame="admin">
+        <action name="baja-correo" method="baja" class="correoAction" frame="admin">
             <result name="success">admin/correo/baja_correo.php</result>
             <result name="error">admin/error.php</result>
             <result name="listas">listas-correo</result>
         </action>
-        <action name="alta-correo" method="alta" class="CorreoAction" frame="admin">
+        <action name="alta-correo" method="alta" class="correoAction" frame="admin">
             <result name="success">admin/correo/alta_correo.php</result>
             <result name="error">admin/correo/alta_correo.php</result>
             <result name="fatal">admin/error.php</result>
             <result name="listas">listas-correo</result>
         </action>
-        <action name="edicion-correo" method="edicion" class="CorreoAction" frame="admin">
+        <action name="edicion-correo" method="edicion" class="correoAction" frame="admin">
             <result name="success">admin/correo/edicion_correo.php</result>
             <result name="error">admin/correo/edicion_correo.php</result>
             <result name="fatal">admin/error.php</result>
             <result name="listas">listas-correo</result>
         </action>
-		<action name="baja-email-usuario" method="baja_email" class="CorreoAction">
+		<action name="informe-envio" method="informe" class="envioCorreoAction" frame="admin">
+            <result name="success">admin/correo/informe_programa.php</result>
+            <result name="error">error.php</result>
+        </action>
+		<action name="baja-email-usuario" method="baja_email" class="correoAction">
             <result name="success">correos/baja_email.php</result>
             <result name="error">error.php</result>
         </action>
+        <action name="exportar-lista-correo" method="exportar" class="listaCorreoAction">
+            <result name="success">admin/correo/exportar_lista.php</result>
+            <result name="fatal">admin/error.php</result>
+        </action>
     </package>
 	<package name="public">
-		<action name="sitemap" method="sitemap" class="publicAction">
-            <result name="success">sitemap.php</result>
-            <result name="error">error.php</result>
-        </action>
         <action name="formulario-de-contacto" method="contacto" class="publicAction" frame="index">
             <result name="success">contacto.php</result>
         </action>
@@ -190,14 +204,17 @@
             <result name="error">contacto.php</result>
             <result name="fatal">error.php</result>
         </action>
-        <action name="localizacion-sevilla" method="mapa" class="publicAction" frame="movil">
+        <action name="localizacion-sevilla" method="mapa" class="publicAction" frame="index">
             <result name="success">mapa.php</result>
+        </action>
+		<action name="movil" method="version_movil" class="publicAction">
+            <result name="success">index</result>
         </action>
 	</package>
 	<package name="usuario">
 		<action name="logout" method="logout" class="usuarioAction">
-            <result name="success">admin/logout.php</result>
-            <result name="error">admin/error.php</result>
+            <result name="success">logout.php</result>
+            <result name="error">error.php</result>
         </action>
     	<action name="usuarios" method="consulta" class="usuarioAction" frame="admin">
             <result name="success">admin/usuario/index_usuarios.php</result>
@@ -219,6 +236,14 @@
             <result name="success">admin/usuario/baja_usuario.php</result>
             <result name="error">admin/error.php</result>
             <result name="ok">usuarios</result>
+        </action>
+        <action name="inicio-sesion" method="inicio" class="usuarioAction" frame="index">
+            <result name="success"></result>
+            <result name="error">inicio-sesion.php</result>
+        </action>
+        <action name="inicio-sesion-adm" method="inicio_adm" class="usuarioAction" frame="admin">
+            <result name="success"></result>
+            <result name="error">inicio-sesion.php</result>
         </action>
 	</package>
 </packages>

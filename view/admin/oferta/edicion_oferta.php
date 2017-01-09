@@ -3,7 +3,7 @@
 	{
 		if (document.getElementById('edicionImagen' + id).id_contenido_destino.value)
 		{
-			var mensaje = "¿Mover la imagen a la oferta indicada?";
+			var mensaje = "Â¿Mover la imagen a la oferta indicada?";
 			if (window.confirm(mensaje))
 			{
 				document.edicion.guardar.value = 0;
@@ -137,7 +137,7 @@
 				<input type="hidden" name="tamano" value="100" />
 				<div style="height: 10px; clear: both;"></div>
 				<div style="text-align: right;">
-					<span style="color: #999;">* Sólo indicar si se va a cambiar por otro archivo de 
+					<span style="color: #999;">* S&oacute;lo indicar si se va a cambiar por otro archivo de 
 						imagen</span>
 				</div>
 				<div style="height: 40px; clear: both;"></div>
@@ -155,7 +155,7 @@
 					&nbsp;
 					<input type="submit" value="Guardar imagen" />
 					<input type="button" value="Borrar imagen" style="color: red;" 
-							onclick="if (window.confirm('¿Desvincular esta imagen de la oferta?')){document.edicionImagen<?php 
+							onclick="if (window.confirm('Â¿Desvincular esta imagen de la oferta?')){document.edicionImagen<?php 
 							echo $imagen->idImagen; ?>.guardarImagen.value = 0; document.edicionImagen<?php 
 							echo $imagen->idImagen; ?>.borrarImagen.value = 1; document.edicionImagen<?php 
 							echo $imagen->idImagen; ?>.submit();}" />

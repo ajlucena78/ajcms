@@ -1,12 +1,14 @@
-<div style="text-align: center;">
-	<a href="http://www.facebook.com/PublicarPublicidadEstaticayDinamica" 
-			target="_blank">
-		<img style="vertical-align: middle;" src="<?php echo URL_RES; ?>imagenes/web/facebook2.png" 
-				alt="S&iacute;guenos en Facebook" title="S&iacute;guenos en Facebook" />
-	</a>
-	&nbsp;
-	<a href="<?php vlink('rss'); ?>" target="_blank">
-		<img style="vertical-align: middle;" src="<?php echo URL_RES; ?>imagenes/web/rss2.png" 
-				alt="Subscr&iacute;bete a nuestro RSS" title="Subscr&iacute;bete a nuestro RSS" />
-	</a>
+<div style="margin: 10pt;">
+	<div style="float: left; width: 30%;">
+		<a href="https://www.facebook.com" target="_blank">
+			<img src="<?php echo URL_RES; ?>imagenes/web/facebook2.png" alt="S&iacute;guenos en Facebook" 
+					title="S&iacute;guenos en Facebook" style="width: 80%;" />
+		</a>
+	</div>
+	<div style="float: left; width: 70%;">
+		<a href="https://www.facebook.com" target="_blank">
+			Vis&iacute;tanos en nuestra p&aacute;gina de Facebook
+		</a>
+	</div>
+	<div style="clear: both;"></div>
 </div>

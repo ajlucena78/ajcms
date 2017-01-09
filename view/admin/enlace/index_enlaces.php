@@ -1,6 +1,6 @@
 <?php if (count($enlaces) > 0) { ?>
 	<div style="text-align: left;">
-		<table border="0" style="width: 100%;">
+		<table border="0" style="width: 100%;" summary="Enlaces">
 			<thead>
 				<tr class="cabecera_tabla">
 					<th>
@@ -34,8 +34,8 @@
 							</a>
 						</td>
 						<td>
-							<a href="<?php echo $enlace->url; ?>" style="color: blue;" title="Abrir URL" 
-									target="_blank"><?php echo $enlace->url; ?></a>
+							<a href="<?php echo $enlace->permalink; ?>" style="color: blue;" title="Abrir URL" 
+									target="_blank"><?php echo $enlace->permalink; ?></a>
 						</td>
 						<td style="text-align: center;"><?php echo $enlace->referencia; ?></td>
 						<td style="text-align: center;">

@@ -28,12 +28,12 @@
 				$uploadfile = $ruta . '/' . $video->id_video . '.' . $video->extension;
 				if (!$res = move_uploaded_file($video->tmp_dir(), $uploadfile))
 				{
-					$this->error = 'El vídeo no ha podido ser guardado en el servidor';
+					$this->error = 'El vÃ­deo no ha podido ser guardado en el servidor';
 					return false;
 				}
 				if (!$res = chmod($uploadfile, 0777))
 				{
-					$this->error = 'No ha sido posible cambiar los permisos del vídeo añadido';
+					$this->error = 'No ha sido posible cambiar los permisos del vÃ­deo aÃ±adido';
 					return false;
 				}
 			}
@@ -46,11 +46,11 @@
 			return true;
 		}
 		
-		public function valida(Video $video)
+		public function valida_video(Video $video)
 		{
 			if (!$video->titulo_video)
 			{
-				$this->error = 'Falta el título del video';
+				$this->error = 'Falta el tÃ­tulo del video';
 				return false;
 			}
 			if ($video->ancho_video and !is_numeric($video->ancho_video))
@@ -67,12 +67,12 @@
 			{
 				if (!$video->extension)
 				{
-					$this->error = 'Falta la extensión del video';
+					$this->error = 'Falta la extensiÃ³n del video';
 					return false;
 				}
 				if (!$video->tam)
 				{
-					$this->error = 'Falta el tamaño del video';
+					$this->error = 'Falta el tamaÃ±o del video';
 					return false;
 				}
 				if (strtoupper($video->extension) != 'FLV' or ($video->tipo != 'video/x-flv' 

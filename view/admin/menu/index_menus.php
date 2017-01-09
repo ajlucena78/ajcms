@@ -26,16 +26,17 @@
 				<?php foreach ($contenidos as $contenido) { ?>
 					<option value="<?php echo $contenido->idContenido; ?>"<?php 
 							if ($menu->contenido and $contenido->idContenido == $menu->contenido->idContenido)
-								{ echo "selected"; } ?>><?php echo substr($contenido->descripcion, 0, 30) 
-								. '...'; ?>
+									{ echo "selected"; } ?>><?php echo $contenido->descripcion; ?>
 					</option>
 				<?php } ?>
 			</select>
-			<input type="submit" value="Guardar" style="width: 15%;" />
 			<?php if ($idPadre) { ?>
+				<input type="submit" value="Guardar" style="width: 15%;" />
 				<input type="button" value="Atr&aacute;s" style="width: 11%;" 
 						onclick="window.location = '<?php vlink('menus', 
 						array('idPadre' => ($menuPadre->padre) ? $menuPadre->padre->idMenu : '0')); ?>';" />
+			<?php }else{ ?>
+				<input type="submit" value="Guardar" style="width: 27%;" />
 			<?php } ?>
 		</div>
 	</form>
@@ -63,8 +64,7 @@
 					<input type="hidden" name="borrar" value="0" />
 					<input type="hidden" name="subir" value="0" />
 					<input type="hidden" name="bajar" value="0" />
-					<input type="hidden" name="idPadre" 
-							value="<?php if ($menu->padre) echo $menu->padre->idMenu; ?>" />
+					<input type="hidden" name="idPadre" value="<?php if ($menu->padre) echo $menu->padre->idMenu; ?>" />
 					<div>
 						<input type="text" name="titulo" style="width: 35%;" id="titulo<?php echo $cont; ?>" 
 								value="<?php echo $menu->titulo; ?>" maxlength="50" 
@@ -73,29 +73,29 @@
 								id="idContenido<?php echo $cont; ?>" 
 								onchange="activa_form_menu(<?php echo $cont; ?>);">
 							<option value="">&nbsp;</option>
-							<?php foreach ($contenidos as $contenido) { ?>
-								<option value="<?php echo $contenido->idContenido; ?>"<?php 
-										if ($menu->contenido and $contenido->idContenido == $menu->contenido->idContenido){
-											echo "selected='selected'"; } ?>><?php 
-											echo substr($contenido->descripcion, 0, 30) . '...'; ?></option>
+								<?php foreach ($contenidos as $contenido) { ?>
+									<option value="<?php echo $contenido->idContenido; ?>"<?php 
+											if ($menu->contenido and $contenido->idContenido == $menu->contenido->idContenido){
+												echo "selected='selected'"; } ?>><?php 
+												echo $contenido->descripcion; ?></option>
 							<?php } ?>
 						</select>
 						<input type="text" disabled="disabled" style="text-align: right; width: 5%;" 
 								value="<?php echo $numHijosMenu[$contMenus++]; ?>" title="Submen&uacute;s" />
-						<input type="button" value=">>" id="submenus<?php echo $cont; ?>"
-								onclick="window.location = '<?php vlink('menus'
-								, array('idPadre' => $menu->idMenu)); ?>';" 
-								style="width: 10%;" title="Ver los submen&uacute;s" />
-						<input type="button" value="Opciones" style="width: 10%;" 
-								onclick="ver_opciones_menu(<?php echo $cont; ?>);" />
+						<input type="button" value=">>" id="submenus<?php echo $cont; ?>" onclick="window.location = '<?php 
+								vlink('menus', array('idPadre' => $menu->idMenu)); ?>';" style="width: 10%;" title="Ver los submen&uacute;s" />
+						<input type="button" value="Opciones" style="width: 10%;" onclick="ver_opciones_menu(<?php echo $cont; ?>);" />
 					</div>
-					<div id="editar_menu_<?php echo $cont; ?>" 
-							style="text-align: center; margin: 2%; display: none;">
-						<input type="submit" value="Guardar Cambios" style="width: 20%;" 
-								id="editar<?php echo $cont; ?>" disabled="disabled" />
-						<input type="button" value="Cancelar" style="width: 10%;" 
-								onclick="cancelar_form_menu(<?php echo $idPadre; ?>);"
-								id="cancelar<?php echo $cont; ?>" disabled="disabled" />
+					<div id="editar_menu_<?php echo $cont; ?>" style="text-align: center; margin: 2%; display: none;">
+						<input type="submit" value="Guardar Cambios" style="width: 20%; font-weight: bold;" id="editar<?php echo $cont; ?>" disabled="disabled" />
+						<input type="button" value="Cancelar" style="width: 10%;" onclick="cancelar_form_menu(<?php echo $idPadre; ?>);" id="cancelar<?php 
+								echo $cont; ?>" disabled="disabled" />
+						<?php if ($menu->contenido) { ?>
+							&nbsp;
+							<input type="button" value="Editar p&aacute;gina" style="width: 16%;" 
+									onclick="ir('<?php echo link_action('edicion-contenido-texto'
+									, array('id' => $menu->contenido->idContenido)); ?>');" />
+						<?php } ?>
 						&nbsp;
 						<input type="button" value="Subir" style="width: 10%;" title="Subir una posici&oacute;n"
 								onclick="subir_menu(<?php echo $menu->idMenu; ?>);" 
@@ -104,8 +104,8 @@
 								onclick="bajar_menu(<?php echo $menu->idMenu; ?>);" 
 								id="bajar<?php echo $cont; ?>" />
 						&nbsp;
-						<input type="button" value="Borrar" style="color: red; width: 8%;"
-								onclick="borrar_menu(<?php echo $menu->idMenu; ?>);"
+						<input type="button" value="Borrar" style="color: red; width: 8%;" 
+								onclick="borrar_menu(<?php echo $menu->idMenu; ?>);" 
 								id="borrar<?php echo $cont; ?>" />
 					</div>
 				</form>

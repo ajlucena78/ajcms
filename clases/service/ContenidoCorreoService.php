@@ -36,7 +36,7 @@
 			$cabMensaje .= '<html xmlns=\'http://www.w3.org/1999/xhtml\' lang=\'es\' xml:lang=\'es\'>';
 			$cabMensaje .= '	<head>';
 			$cabMensaje .= '		<meta http-equiv=\'Content-Type\'';
-			$cabMensaje .= 'content=\'text/html; charset=iso-8859-1\' />';
+			$cabMensaje .= 'content=\'text/html; charset=utf-8\' />';
 			$cabMensaje .= '		<title>' . formato_html($correo->descripcion) . '</title>';
 			$cabMensaje .= '	</head>';
 			$cabMensaje .= '	<body>';

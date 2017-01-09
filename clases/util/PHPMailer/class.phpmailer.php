@@ -56,7 +56,7 @@ class PHPMailer {
    * Sets the CharSet of the message.
    * @var string
    */
-  public $CharSet           = 'iso-8859-1';
+  public $CharSet           = 'utf-8';
 
   /**
    * Sets the Content-type of the message.
@@ -81,13 +81,13 @@ class PHPMailer {
    * Sets the From email address for the message.
    * @var string
    */
-  public $From              = 'enrique@publicar.es';
+  public $From              = EMAIL_FROM;
 
   /**
    * Sets the From name of the message.
    * @var string
    */
-  public $FromName          = 'Publicar';
+  public $FromName          = EMAIL_FROM_NAME;
 
   /**
    * Sets the Sender email (Return-Path) of the message.  If not empty,
@@ -1234,7 +1234,7 @@ class PHPMailer {
     } elseif ($this->sign_key_file) {
       try {
         $file = tempnam('', 'mail');
-        file_put_contents($file, $body); //TODO check this worked
+        file_put_contents($file, $body); //TO DO check this worked
         $signed = tempnam("", "signed");
         if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), NULL)) {
           @unlink($file);
@@ -1731,7 +1731,7 @@ class PHPMailer {
       case 'text':
       default:
         // Replace every high ascii, control =, ? and _ characters
-        //TODO using /e (equivalent to eval()) is probably not a good idea
+        //TO DO using /e (equivalent to eval()) is probably not a good idea
         $encoded = preg_replace('/([\000-\011\013\014\016-\037\075\077\137\177-\377])/e',
               "'='.sprintf('%02X', ord('\\1'))", $encoded);
         break;
@@ -2141,7 +2141,7 @@ class PHPMailer {
   * @param string $name Parameter Name
   * @param mixed $value Parameter Value
   * NOTE: will not work with arrays, there are no arrays to set/reset
-  * @todo Should this not be using __set() magic function?
+  * @ todo Should this not be using __set() magic function?
   */
   public function set($name, $value = '') {
     try {

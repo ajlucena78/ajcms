@@ -1,29 +1,13 @@
 <?php
 	class PublicAction extends Action
 	{
-		protected $noticiaService;
-		protected $contenidoService;
 		protected $menuService;
-		protected $contenidos;
-		protected $noticias;
 		protected $menus;
-		
-		public function sitemap()
-		{
-			$contenidos = $this->contenidoService->findAll();
-			$this->contenidos = array();
-			foreach ($contenidos as $contenido)
-			{
-				if ($contenido->tipo != 3)
-					$this->contenidos[] = $contenido;
-			}
-			header('Content-Type:text/xml');
-			return 'success';
-		}
 		
 		public function contacto()
 		{
 			$this->menus = $this->menuService->menus_index();
+			$this->titulo = 'Formulario de contacto';
 			return 'success';
 		}
 		
@@ -32,25 +16,34 @@
 			$this->menus = $this->menuService->menus_index();
 			if (!trim($_POST['nombre']) or !trim($_POST['telefono']) or !trim($_POST['comentario']))
 			{
-				$this->error = 'El nombre, el telÈfono y el mensaje son obligatorios';
+				$this->error = 'El nombre, el tel√©fono y el mensaje son obligatorios';
 				return 'error';
 			}
 			$mensaje = 'Nombre: ' . $_POST['nombre'] . "\n";
-			$mensaje .= 'TelÈfono: ' . $_POST['telefono'] . "\n";
+			$mensaje .= 'Tel√©fono: ' . $_POST['telefono'] . "\n";
 			$mensaje .= 'Email: ' . $_POST['email'] . "\n";
 			$mensaje .= "\n" . $_POST['comentario'] . "\n";
-			if (!@mail('publicar@publicar.es', 'Consulta de ' . $_POST['nombre'], $mensaje
-					, 'From: Formulario de contacto<info@publicar.es>'))
+			if (!@mail(EMAIL_FROM, 'Consulta de ' . $_POST['nombre'], $mensaje
+					, 'From: Formulario de contacto<' . EMAIL_FROM . '>'))
 			{
-				$this->error = 'El envÌo no se ha podido realizar en este momento, intente m·s tarde por favor';
+				$this->error = 'El env√≠o no se ha podido realizar en este momento, intente m√°s tarde por favor';
 				return 'fatal';
 			}
+			$this->titulo = 'Formulario de contacto';
 			return 'success';
 		}
 		
 		public function mapa()
 		{
 			$this->menus = $this->menuService->menus_index();
+			$this->titulo = 'Mapa';
+			return 'success';
+		}
+		
+		public function version_movil()
+		{
+			$_SESSION['navegador'] = 'movil';
+			$_SESSION['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
 			return 'success';
 		}
 	}

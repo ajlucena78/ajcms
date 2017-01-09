@@ -6,7 +6,7 @@
 		{
 			$sql = 'update ContenidoImagen set idContenido = ' . $id . ' where idContenido = ' 
 					. $imagen->idContenido . ' and idImagen = ' . $imagen->idImagen;
-			if (!self::$conexion->ejecuta($sql))
+			if (self::$conexion->ejecuta($sql) === false)
 			{
 				$this->error = self::$conexion->error();
 				return false;
@@ -28,7 +28,7 @@
 			}
 			if ($imagen->orden <= 0)
 			{
-				$this->error = 'El orden debe ser un número entre 1 y el total de imágenes mostradas';
+				$this->error = 'El orden debe ser un nÃºmero entre 1 y el total de imÃ¡genes mostradas';
 				return false;
 			}
 			$imagenAux = new ContenidoImagen();
@@ -55,7 +55,7 @@
 				//baja
 				$sql = "update ContenidoImagen set orden = orden -1 where idContenido = $idContenido";
 				$sql .= " and orden > $ordenActual and orden <= $orden";
-				if (!self::$conexion->ejecuta($sql))
+				if (self::$conexion->ejecuta($sql) === false)
 				{
 					$this->error = self::$conexion->error();
 					$this->cancela_transaccion();
@@ -67,7 +67,7 @@
 				//sube
 				$sql = "update ContenidoImagen set orden = orden + 1 where idContenido = $idContenido";
 				$sql .= " and orden >= $orden and orden < $ordenActual";
-				if (!self::$conexion->ejecuta($sql))
+				if (self::$conexion->ejecuta($sql) === false)
 				{
 					$this->error = self::$conexion->error();
 					$this->cancela_transaccion();
@@ -77,7 +77,7 @@
 			//se mueve el que se desea:
 			$sql = "update ContenidoImagen set orden = $orden where idImagen = $idImagen";
 			$sql .= " and idContenido = $idContenido";
-			if (!self::$conexion->ejecuta($sql))
+			if (self::$conexion->ejecuta($sql) === false)
 			{
 				$this->error = self::$conexion->error();
 				$this->cancela_transaccion();
@@ -94,7 +94,7 @@
 		
 		public function valida(ContenidoImagen $imagen)
 		{
-			if (!parent::valida($imagen))
+			if (!parent::valida_imagen($imagen))
 				return false;
 			if (!$imagen->orden)
 			{
@@ -103,7 +103,7 @@
 			}
 			if (!$imagen->tamano)
 			{
-				$this->error = 'Falta el tamaño en % de la imagen';
+				$this->error = 'Falta el tamaÃ±o en % de la imagen';
 				return false;
 			}
 			return true;

@@ -1,4 +1,4 @@
-function carga(url, id, funcion, param, ocultar, add_html, ancla)
+function carga(url, id, funcion, param, ocultar, add_html, ancla, retorno)
 {
 	var clase = null;
 	var cargador = inicia_cargador();
@@ -29,7 +29,8 @@ function carga(url, id, funcion, param, ocultar, add_html, ancla)
 	// métodos open y send
 	cargador.open('GET', url, true);
 	cargador.send(null);
-	return true;
+	if (!retorno)
+		return true;
 }
 
 //función que presenta la información

@@ -12,7 +12,7 @@
 			if ($ancho_origen < $anchura or $alto_origen < $anchura)
 			{
 				$_SESSION['error_foto_receta'] = 'El ancho y alto de la imagen no pueden ser menores a ' 
-						. $anchura . ' pÌxeles';
+						. $anchura . ' p√≠xeles';
 				return false;
 			}
 			$x = $y = 0;
@@ -22,13 +22,13 @@
 				//la imagen no es un cuadrado, luego hay que recortarla para que lo sea
 				if ($res > 0)
 				{
-					//es m·s ancha que alta
+					//es m√°s ancha que alta
 					$x = round($res / 2);
 					$ancho_origen = $alto_origen;
 				}
 				else
 				{
-					//es m·s alta que alta
+					//es m√°s alta que alta
 					$y = round(abs($res) / 2);
 					$alto_origen = $ancho_origen;
 				}

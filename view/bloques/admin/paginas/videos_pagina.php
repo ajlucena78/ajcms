@@ -28,7 +28,7 @@
 						. ".jpg")) { ?>
 					<br />
 					<img src="<?php echo URL_RES; ?>upload/<?php echo $directorio; ?>/video_<?php 
-							echo $video->id_video; ?>.jpg" alt="Imagen del vídeo"
+							echo $video->id_video; ?>.jpg" alt="Imagen del vÃ­deo"
 							style="border: 0px; display: block; width: 90%;" />
 				<?php } ?>
 			</div>
@@ -37,12 +37,12 @@
 					<label for="video">Localizaci&oacute;n del archivo *:</label>
 				</div>
 				<div style="float: right; text-align: right; width: 65%;">
-					<input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
+					<input type="hidden" name="MAX_FILE_SIZE" value="80000000" />
 					<input type="file" name="video" id="video<?php echo $cont; ?>" style="width: 100%;" />
 				</div>
 				<div style="height: 10px; clear: both;"></div>
 				<div style="float: left; width: 35%;">
-					<label for="titulo_video">T&iacute;tulo:</label>
+					<label for="titulo_video">T&iacute;tulo (opcional):</label>
 				</div>
 				<div style="float: right; text-align: right; width: 65%;">
 					<input type="text" name="titulo_video" id="titulo_video<?php echo $cont; ?>" 
@@ -93,7 +93,7 @@
 					<input type="submit" value="Guardar video" />
 					&nbsp;
 					<input type="button" value="Borrar video" style="color: red;" 
-							onclick="if (window.confirm('¿Desvincular esteste vídeo del contenido?')){document.edicionVideo<?php 
+							onclick="if (window.confirm('Â¿Desvincular este vÃ­deo del contenido?')){document.edicionVideo<?php 
 									echo $video->id_video; ?>.guardarVideo.value = 0; document.edicionVideo<?php
 									echo $video->id_video; ?>.borrarVideo.value = 1; document.edicionVideo<?php 
 									echo $video->id_video; ?>.submit();}" />

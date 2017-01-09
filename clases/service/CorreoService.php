@@ -11,7 +11,7 @@
 			require_once APP_ROOT . 'clases/util/Email.php';
 			if (!Email::check_email_address($model->email_correo))
 			{
-				$this->error = 'La dirección de correo no es correcta';
+				$this->error = 'La direcciÃ³n de correo no es correcta';
 				return false;
 			}
 			if ($model->baja === null)
@@ -33,7 +33,7 @@
 			$correo = $this->find($correo);
 			if ($correo)
 			{
-				//el correo ya existe, se añade a la lista indicada
+				//el correo ya existe, se aÃ±ade a la lista indicada
 				$correo = $correo[0];
 				$model->id_correo = $correo->id_correo;
 			}
@@ -56,7 +56,7 @@
 				}
 				$model->id_correo = $id;
 			}
-			//se guarda la relación del correo con la lista de correos indicada
+			//se guarda la relaciÃ³n del correo con la lista de correos indicada
 			if (!$this->save_relation($model, 'listas'))
 			{
 				return false;

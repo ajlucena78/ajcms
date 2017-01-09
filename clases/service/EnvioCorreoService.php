@@ -5,7 +5,7 @@ class EnvioCorreoService extends Service
 	{
 		if (!$model->fecha_programa_envio)
 		{
-			$this->error = 'Debe indicar la fecha de envío';
+			$this->error = 'Debe indicar la fecha de envÃ­o';
 			return false;
 		}
 		if (!$model->contenido or !$model->contenido->idContenido)
@@ -15,12 +15,12 @@ class EnvioCorreoService extends Service
 		}
 		if (!is_array($model->listas) or count($model->listas) == 0)
 		{
-			$this->error = 'Es necesario añadir al menos un destinatario para el envío';
+			$this->error = 'Es necesario aÃ±adir al menos un destinatario para el envÃ­o';
 			return false;
 		}
 		if (!$model->usuario or !$model->usuario->idUsuario)
 		{
-			$this->error = 'Debe indicar el autor del envío';
+			$this->error = 'Debe indicar el autor del envÃ­o';
 			return false;
 		}
 		return true;
@@ -34,7 +34,7 @@ class EnvioCorreoService extends Service
 		{
 			if (!$model->id_envio_correo)
 			{
-				$this->error = 'Debe indicar el ID de envío a editar';
+				$this->error = 'Debe indicar el ID de envÃ­o a editar';
 				return false;
 			}
 		}
@@ -115,7 +115,7 @@ class EnvioCorreoService extends Service
 		$mail->AddAddress($email);
 		$mail->Subject 	= stripslashes($correo->descripcion);
 		$mail->Body 	= stripslashes($mensaje);
-		$mail->CharSet 	= 'iso-8859-15';
+		$mail->CharSet 	= 'utf-8';
 		$mail->IsHTML(true);
 		$mail->Mailer 	= 'smtp';
 		$mail->SetLanguage('es', APP_ROOT . 'clases/PHPMailer/language/');
@@ -148,7 +148,7 @@ class EnvioCorreoService extends Service
 		if (isset($fichero))
 			@unlink($fichero);
 		if (!$res)
-			$this->error = 'No ha sido posible el envío del mensaje';
+			$this->error = 'No ha sido posible el envÃ­o del mensaje';
 		return $res;
 	}
 
@@ -170,7 +170,7 @@ class EnvioCorreoService extends Service
 	{
 		if (!$this->model or !$this->model->id_envio_correo)
 		{
-			$this->error = 'Debe indicar el ID del envío de correo';
+			$this->error = 'Debe indicar el ID del envÃ­o de correo';
 			return false;
 		}
 		if (!$this->correoModel->get_destinatarios_envio($this->model, $email))
@@ -225,7 +225,7 @@ class EnvioCorreoService extends Service
 			$mensajeAux = str_replace('[email]', $emailVO->get_email_correo(), $mensaje);
 			$mensajeAux = str_replace('[key]', $emailVO->get_referencia_correo(), $mensajeAux);
 			$mail = new PHPMailer;
-			$mail->CharSet 	= 'iso-8859-15';
+			$mail->CharSet 	= 'utf-8';
 			$mail->IsHTML(true);
 			$mail->Mailer 	= 'smtp';
 			$mail->SetLanguage('es', $rootDocumentos . '/clases/PHPMailer/language/');
@@ -243,7 +243,7 @@ class EnvioCorreoService extends Service
 			$mail->AddReplyTo(EMAIL_FROM, EMAIL_FROM_NAME);
 			$res = $mail->Send();
 			if (!$res)
-			$errorMsg .= 'No ha sido posible el envío del mensaje a '
+			$errorMsg .= 'No ha sido posible el envÃ­o del mensaje a '
 			. $emailVO->get_email_correo() . ' (' . $mail->ErrorInfo . ')\n';
 			$this->model->set_resultado($emailVO->get_email_correo());
 			if (!$envio->edicionEnvioCorreo($this->model, false))

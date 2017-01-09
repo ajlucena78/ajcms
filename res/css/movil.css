@@ -1,0 +1,286 @@
+body
+{
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	line-height: 120%;
+	text-align: center;
+	margin: 0;
+	background-color: #F6F6F6;
+}
+
+p
+{
+	padding: 0;
+	margin: 0;
+	margin-top: 5pt;
+	margin-bottom: 5pt;
+}
+
+.texto_cen
+{
+	text-align: center;
+}
+
+hr
+{
+  border: 1px solid #DDD;
+  margin: auto;
+  padding: 0;
+}
+
+img
+{
+  border: 0;
+  vertical-align: middle;
+}
+
+a
+{
+  color: #27638C;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+a:link, a:visited
+{
+  color: #27638C;
+}  
+
+a:hover, a:active
+{}
+
+div
+{
+	padding-right: 2%;
+	padding-left: 2%;
+}
+
+h1
+{
+	text-align: center;
+ 	font-size: 120%;
+  	font-weight: bold;
+	text-transform: uppercase;
+}
+
+h2
+{
+	text-align: center;
+ 	font-size: 110%;
+  	font-weight: bold;
+  	margin: 0;
+}
+
+h3
+{
+	font-size: 100%;
+	text-align: center;
+}
+
+#cookies
+{
+	text-align: center;
+	background-color: #f3f781;
+	padding-top: 5pt;
+	padding-bottom: 5pt;
+	font-size: 70%;
+}
+
+.logo-cab
+{
+	margin-right: 1%;
+	margin-left: 1%;
+}
+
+#top
+{
+	background-color: white;
+	/*
+	border-bottom-color: #DDD;
+	border-bottom-style: solid;
+	*/
+	z-index: 100;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+#sellos
+{
+	margin-top: 4pt;
+	margin-bottom: 4pt;
+	display: none;
+	padding-right: 1%;
+	padding-left: 1%;
+}
+
+.boton
+{
+	-moz-box-shadow:inset 0px 1px 0px 0px #fff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #fff;
+	box-shadow:inset 0px 1px 0px 0px #fff;
+	background-color:#ededed;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	border-radius:2px;
+	border:1px solid #999;
+	display:inline-block;
+	color:#333;
+	font-family:arial;
+	font-size: 90%;
+	font-weight:bold;
+	padding:4px 10px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #fff;
+	width: 80%;
+	margin-bottom: 4px;
+}
+
+.foto
+{
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 1%;
+	padding-right: 1%;
+	font-size: 80%;
+	text-align: center; 
+	float: left;
+	width: 48%;
+}
+
+#logo
+{
+	padding-right: 1%;
+	padding-left: 1%;
+	padding-top: 10pt;
+	padding-bottom: 10pt;
+}
+
+.div
+{
+	padding: 0;
+	margin: 0;
+}
+
+.texto_mas
+{
+	display: none;
+	margin-bottom: 5pt;
+}
+
+.texto_mas_visible
+{
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+}
+
+#leer_mas_boton
+{
+	text-align: center;
+	margin-bottom: 10pt;
+}
+
+#leer_mas_boton2
+{
+	text-align: center;
+	margin-bottom: 10pt;
+	margin-top: 5pt;
+}
+
+#burbujas
+{
+	width: 100%;
+	vertical-align: top;
+}
+
+.menu
+{
+	background-color: white;
+	text-align: center;
+	padding-top: 5pt;
+	padding-bottom: 5pt;
+	text-transform: uppercase;
+}
+
+.menu2
+{
+	background-color: #F3F3F3;
+	text-align: center;
+	padding-top: 5pt;
+	padding-bottom: 5pt;
+	text-transform: uppercase;
+}
+
+input[type='text']
+{
+	width: 99%;
+	height: 20pt;
+}
+
+input[type='password']
+{
+	width: 99%;
+	height: 20pt;
+}
+
+textarea
+{
+	width: 99%;
+}
+
+.pie
+{
+	background-color: white;
+	text-align: center;
+	padding-top: 10pt;
+	padding-bottom: 10pt;
+}
+
+.burbujas_pie
+{
+	padding: 0pt;
+}
+
+.pie_foto
+{
+	height: 25pt;
+	color: #333 !important;
+	font-size: 80%;
+	margin-bottom: 3pt;
+}
+
+.imagen-submenu
+{
+	vertical-align: middle;
+	width: 100%;
+}
+
+.h2-submenu
+{
+	font-size: 100%;
+	text-align: left;
+	font-weight: bold;
+	margin: 0 !important;
+	text-transform: uppercase;
+}
+
+.cont-categorias
+{
+	margin: 0 !important;
+	margin-top: 10pt !important;
+	margin-bottom: 10pt !important;
+	padding: 0 !important;
+}
+
+.texto-categoria
+{
+	text-align: left;
+	padding: 0;
+}
+
+#preface
+{
+	background: url('../imagenes/web/spain-m.png') repeat-x top;
+	min-height: 10px;
+}

@@ -6,19 +6,25 @@
 		protected $contenidoFicheroService;
 		protected $contenidoTextoService;
 		protected $contenidoCorreoService;
+		protected $contenidoEnlaceService;
 		protected $usuarioService;
 		protected $contenidoImagenService;
 		protected $contenidoVideoService;
+		protected $imagenService;
 		protected $contenido;
 		protected $menus;
 		protected $menuContenido;
 		protected $menuContenidoPadre;
 		protected $titulo;
 		protected $MENU_01;
+		protected $enlace;
+		protected $imagen;
+		protected $contenidos;
+		protected $menuCont;
 		
 		public function index()
 		{
-			//carga del módulo adecuado
+			//carga del mÃ³dulo adecuado
 			if (isset($_GET['permalink']) and $_GET['permalink'] and !isset($_GET['referencia']))
 			{
 				//mediante el permalink
@@ -35,8 +41,38 @@
 				}
 				if (!$this->contenido)
 				{
-					$this->error = 'No se encuentra el contenido: ' . $_GET['permalink'];
-					return 'error';
+					//se compruueba si es una imagen
+					$this->imagen = new Imagen();
+					$this->imagen->permalink = $_GET['permalink'];
+					$this->imagen = $this->imagenService->find($this->imagen);
+					if (!isset($this->imagen[0]) or !$this->imagen[0])
+					{
+						$this->error = 'No se encuentra el contenido: ' . $_GET['permalink'];
+						return 'error';
+					}
+					else
+					{
+						//se trata de una imagen
+						$this->imagen = $this->imagen[0];
+						$this->menus = $this->menuService->menus_index();
+						$this->titulo = $this->imagen->titulo;
+						//se carga el contenido si estuviera asociado a uno de tipo texto
+						$this->contenido = $this->imagen->contenido;
+						if ($this->contenido and $this->contenido[0] and $this->contenido[0]->tipo == CONTENIDO_TEXTO)
+						{
+							if ($this->contenido[0]->privado)
+							{
+								//si la imagen pertenece a una pÃ¡gina privada se comprueba si el usuario estÃ¡ logado
+								$this->usuarioService->check_socio();
+							}
+							$this->contenido = $this->contenidoTextoService->findById($this->contenido[0]->idContenido);
+						}
+						else
+						{
+							$this->contenido = null;
+						}
+						return 'imagen';
+					}
 				}
 			}
 			else
@@ -66,6 +102,12 @@
 			}
 			$this->contenido = $this->contenido[0];
 			
+			//comprobaciÃ³n de contenido privado
+			if ($this->contenido->privado)
+			{
+				$this->usuarioService->check_socio();
+			}
+			
 			//tipo enlace
 			if ($this->contenido->tipo == CONTENIDO_ENLACE)
 			{
@@ -80,11 +122,30 @@
 					$this->error = 'El enlace no se encuentra';
 					return 'error';
 				}
-				header("Location:" . $contenido->url);
-				exit();
+				if ($contenido->tipoEnlace == 1)
+				{
+					//enlace directo a otra direcciÃ³n
+					header('HTTP/1.1 301 Moved Permanently');
+					header('Location: ' . $contenido->url);
+					exit();
+				}
+				elseif ($contenido->tipoEnlace == 2)
+				{
+					//duplicado de pÃ¡gina
+					$cont = new Contenido();
+					$cont->permalink = $contenido->url;
+					$this->contenido = $this->contenidoService->find($cont);
+					if (!$this->contenido)
+					{
+						$this->error = 'Contenido de destino ' . $contenido->permalink . ' no encontrado.';
+						return 'error';
+					}
+					$this->contenido = $this->contenido[0];
+					$this->enlace = $contenido;
+				}
 			}
 			
-			//carga del menú al que pertenece el contenido
+			//carga del menÃº al que pertenece el contenido
 			$menu = new Menu();
 			$menu->contenido = $this->contenido;
 			$menu = $this->menuService->find($menu);
@@ -95,7 +156,7 @@
 			}
 			if ($menu)
 			{
-				$menu = $menu[0];
+				$this->menuCont = $menu = $menu[0];
 				if (isset($_GET['idMenu']) and ($_GET['idMenu'] += 0) > 0 and $menu->padre)
 				{
 					$idPadre = $_GET['idMenu'];
@@ -108,7 +169,7 @@
 					}
 					if (!$menu->padre)
 					{
-						$this->error = 'No se localiza el menú superior al que pertenece el contenido';
+						$this->error = 'No se localiza el menÃº superior al que pertenece el contenido';
 						return 'error';
 					}
 				}
@@ -123,7 +184,7 @@
 						$menu = $this->menuService->findById($idMenuContenido);
 						if (!$menu)
 						{
-							$this->error = 'No se localiza el menú padre';
+							$this->error = 'No se localiza el menÃº padre';
 							return 'error';
 						}
 					}
@@ -135,7 +196,7 @@
 					}
 					else
 					{
-						//carga de los submenús del abuelo
+						//carga de los submenÃºs del abuelo
 						$menuAbuelo = $menu->padre;
 						if (!$menuAbuelo->padre or !$menuAbuelo->padre->idMenu)
 						{
@@ -151,14 +212,14 @@
 			else
 				$idPadre = 0;
 			
-			//carga de todas las opciones de menú del primer nivel (raíz)
+			//carga de todas las opciones de menÃº del primer nivel (raÃ­z)
 			$this->menus = $this->menuService->menus_index();
 			
 			//carga del contenido
 			$verMenu = true;
 			if ($this->contenido->tipo == CONTENIDO_FICHERO)
 			{
-				//inclusión de fichero
+				//inclusiÃ³n de fichero
 				$this->contenido = $this->contenidoFicheroService->findById($this->contenido->idContenido);
 				if ($this->contenido === false)
 				{
@@ -175,7 +236,7 @@
 			}
 			elseif ($this->contenido->tipo == CONTENIDO_MENSAJE)
 			{
-				//inclusión de fichero
+				//inclusiÃ³n de fichero
 				$this->contenido = $this->contenidoCorreoService->findById($this->contenido->idContenido);
 				if ($this->contenido === false)
 				{
@@ -200,7 +261,7 @@
 				}
 				if (!$this->contenido)
 				{
-					$this->error = 'No se puede localizar la página';
+					$this->error = 'No se puede localizar la pÃ¡gina';
 					return 'error';
 				}
 			}
@@ -285,6 +346,19 @@
 			$this->contenido = $this->contenidoTextoService->findById($_GET['id']);
 			if (!$this->contenido)
 				return 'error';
+			return 'success';
+		}
+		
+		public function sitemap()
+		{
+			$contenidos = $this->contenidoService->findAll();
+			$this->contenidos = array();
+			foreach ($contenidos as $contenido)
+			{
+				if ($contenido->tipo != CONTENIDO_MENSAJE)
+					$this->contenidos[] = $contenido;
+			}
+			header('Content-Type:text/xml');
 			return 'success';
 		}
 	}

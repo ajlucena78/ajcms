@@ -26,8 +26,8 @@
 						. $imagen->extension;
 				$archivoOriginal = $rutaFisica . "res/upload/" . $directorio . "/original_" . $imagen->idImagen 
 						. "." . $imagen->extension;
-				//pintar la imagen o im·genes
-				//cuantas im·genes pintar en la capa contando todas las consecutivas y pintar asÌ la capa
+				//pintar la imagen o im√°genes
+				//cuantas im√°genes pintar en la capa contando todas las consecutivas y pintar as√≠ la capa
 				$nImagenesPintar = 0;
 				$pos = strpos($html, "[imagen]", $pos);
 				if ($pos === false)
@@ -44,7 +44,7 @@
 					$nImagenesPintar++;
 				}
 				while (true);
-				//se genera el html con las im·genes
+				//se genera el html con las im√°genes
 				$htmlImagen = "";
 				for ($cont = 0; $cont < $nImagenesPintar; $cont++)
 				{
@@ -54,8 +54,7 @@
 					if (file_exists($archivoOriginal))
 					{
 						$ampliable = true;
-						$htmlImagenAux .= "<a href=\"" . $ruta . "?action=ver_img&amp;id=" . $imagen->idImagen 
-								. "#verimagen\">";
+						$htmlImagenAux .= "<a href=\"" . $ruta . "?action=ver_img&amp;id=" . $imagen->idImagen . "\">";
 					}
 					list($width_img, $height_img) = getimagesize($imagenFile);
 					if (is_object($imagen) and $imagen->alineamiento != 2)
@@ -73,7 +72,7 @@
 					if ($ampliable)
 						$htmlImagenAux .= "</a>";
 					$htmlImagen .= $htmlImagenAux . "\n";
-					//si hay m·s de una imagen
+					//si hay m√°s de una imagen
 					if ($nImagenesPintar > 1 and $cont < ($nImagenesPintar - 1))
 					{
 						$i++;

@@ -3,21 +3,30 @@
 	{
 		protected $usuarioService;
 		protected $permisoService;
+		protected $menuService;
 		protected $usuario;
 		protected $usuarios;
 		protected $permisos;
+		protected $menus;
+		protected $actionForm;
 		
 		public function logout()
 		{
-			$_SESSION['desconectado'] = true;
 			$_SESSION['usuario'] = null;
 			$_SESSION['acceso_usuario_concedido'] = false;
+			$_SESSION['PHP_AUTH_USER'] = null;
+			$_SESSION['PHP_AUTH_PW'] = null;
 			return 'success';
 		}
 		
 		public function consulta()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_GET['login']))
 				$_SESSION['criterios']['login_usuarios'] = $_GET['login'];
 			elseif (!isset($_SESSION['login_usuarios']))
@@ -37,6 +46,11 @@
 		public function alta()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			$this->usuario = new Usuario($_POST);
 			$this->permisos = $this->permisoService->findAll('permiso');
 			if ($this->permisos === false)
@@ -75,6 +89,11 @@
 		public function edicion()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id = $_POST['id'] + 0;
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
@@ -144,6 +163,11 @@
 		public function baja()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id = $_POST['id'];
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
@@ -173,6 +197,59 @@
 				}
 				return 'ok';
 			}
+			return 'success';
+		}
+		
+		public function inicio()
+		{
+			$this->actionForm = 'inicio-sesion';
+			if (!isset($_POST['PHP_AUTH_USER']))
+			{
+				$this->usuarioService->check_redirect();
+			}
+			if (!isset($_POST['PHP_AUTH_USER']) or !$_POST['PHP_AUTH_USER'] or !$_POST['PHP_AUTH_PW'])
+			{
+				$this->menus = $this->menuService->menus_index();
+				if (isset($_SESSION['PHP_AUTH_USER']))
+				{
+					$_POST['PHP_AUTH_USER'] = $_SESSION['PHP_AUTH_USER'];
+				}
+				return 'error';
+			}
+			$_SESSION['PHP_AUTH_USER'] = trim($_POST['PHP_AUTH_USER']);
+			$_SESSION['PHP_AUTH_PW'] = md5(trim($_POST['PHP_AUTH_PW']));
+			if (!$this->usuarioService->check_socio(true))
+			{
+				$this->menus = $this->menuService->menus_index();
+				return 'error';
+			}
+			//TODO $_SESSION['acceso_usuario_concedido'] = false;
+			return 'success';
+		}
+		
+		public function inicio_adm()
+		{
+			$this->actionForm = 'inicio-sesion-adm';
+			if (!isset($_POST['PHP_AUTH_USER']))
+			{
+				$this->usuarioService->check_redirect();
+			}
+			if (!isset($_POST['PHP_AUTH_USER']) or !$_POST['PHP_AUTH_USER'] or !$_POST['PHP_AUTH_PW'])
+			{
+				if (isset($_SESSION['PHP_AUTH_USER']))
+				{
+					$_POST['PHP_AUTH_USER'] = $_SESSION['PHP_AUTH_USER'];
+				}
+				return 'error';
+			}
+			$_SESSION['PHP_AUTH_USER'] = trim($_POST['PHP_AUTH_USER']);
+			$_SESSION['PHP_AUTH_PW'] = md5(trim($_POST['PHP_AUTH_PW']));
+			if (!$this->usuarioService->check_usuario(true))
+			{
+				$this->menus = $this->menuService->menus_index();
+				return 'error';
+			}
+			//TODO $_SESSION['acceso_usuario_concedido'] = false;
 			return 'success';
 		}
 	}

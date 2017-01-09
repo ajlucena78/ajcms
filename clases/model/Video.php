@@ -10,11 +10,14 @@
 		protected $tam;
 		protected $tipo;
 		private $tmp_dir;
+		protected $contenido;
 		
 		public function __construct($datos = null)
 		{
 			parent::__construct($datos);
 			$this->pk['id_video'] = 'auto';
+			$this->fk['contenido'] = new FK('Contenido', ManyToMany, 'idContenido', 'idVideo', null
+					, 'ContenidoVideo');
 		}
 		
 		public function tmp_dir($val = null)

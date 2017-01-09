@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	if (!isset($XML_KEY) or $XML_KEY != date('Ymdh'))
 		exit();
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -8,10 +8,15 @@
     	<action name="index" method="index" class="contenidoAction">
             <result name="success">movil/index.php</result>
             <result name="error">movil/error.php</result>
+            <result name="imagen" frame="movil">movil/imagen.php</result>
         </action>
         <action name="mas-fotos" method="mas_fotos_movil" class="contenidoAction">
             <result name="success">movil/mas-fotos.php</result>
             <result name="error">movil/error.php</result>
+        </action>
+        <action name="sitemap" method="sitemap" class="contenidoAction">
+            <result name="success">sitemap.php</result>
+            <result name="error">error.php</result>
         </action>
 	</package>
 	<package name="contenido-texto">
@@ -24,6 +29,10 @@
 		<action name="ver_imagen" method="show" class="imagenAction" frame="movil">
             <result name="success">movil/imagen.php</result>
             <result name="error">movil/error.php</result>
+        </action>
+        <action name="sitemap-imagenes" method="sitemap" class="imagenAction">
+            <result name="success">sitemap-imagenes.php</result>
+            <result name="error">error.php</result>
         </action>
 	</package>
 	<package name="correo">
@@ -49,6 +58,16 @@
     	<action name="menu" method="index" class="menuAction" frame="movil">
             <result name="success">movil/menu.php</result>
             <result name="error">movil/error.php</result>
+        </action>
+	</package>
+	<package name="usuario">
+		<action name="logout" method="logout" class="usuarioAction">
+            <result name="success">logout.php</result>
+            <result name="error">error.php</result>
+        </action>
+        <action name="inicio-sesion" method="inicio" class="usuarioAction" frame="movil">
+            <result name="success"></result>
+            <result name="error">inicio-sesion.php</result>
         </action>
 	</package>
 </packages>

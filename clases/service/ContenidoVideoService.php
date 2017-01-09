@@ -16,7 +16,7 @@
 			}
 			if ($video->orden <= 0)
 			{
-				$this->error = 'El orden debe ser un número entre 1 y el total de videos mostrados';
+				$this->error = 'El orden debe ser un nÃºmero entre 1 y el total de videos mostrados';
 				return false;
 			}
 			$videoAux = new ContenidoVideo();
@@ -43,7 +43,7 @@
 				//baja
 				$sql = "update ContenidoVideo set orden = orden -1 where idContenido = $idContenido";
 				$sql .= " and orden > $ordenActual and orden <= $orden";
-				if (!self::$conexion->ejecuta($sql))
+				if (self::$conexion->ejecuta($sql) === false)
 				{
 					$this->error = self::$conexion->error();
 					$this->cancela_transaccion();
@@ -55,7 +55,7 @@
 				//sube
 				$sql = "update ContenidoVideo set orden = orden + 1 where idContenido = $idContenido";
 				$sql .= " and orden >= $orden and orden < $ordenActual";
-				if (!self::$conexion->ejecuta($sql))
+				if (self::$conexion->ejecuta($sql) === false)
 				{
 					$this->error = self::$conexion->error();
 					$this->cancela_transaccion();
@@ -65,7 +65,7 @@
 			//se mueve el que se desea:
 			$sql = "update ContenidoVideo set orden = $orden where id_video = $idVideo";
 			$sql .= " and idContenido = $idContenido";
-			if (!self::$conexion->ejecuta($sql))
+			if (self::$conexion->ejecuta($sql) === false)
 			{
 				$this->error = self::$conexion->error();
 				$this->cancela_transaccion();
@@ -79,9 +79,10 @@
 			}
 			return true;
 		}
+		
 		public function valida(ContenidoVideo $video)
 		{
-			if (!parent::valida($video))
+			if (!parent::valida_video($video))
 				return false;
 			if (!$video->orden)
 			{

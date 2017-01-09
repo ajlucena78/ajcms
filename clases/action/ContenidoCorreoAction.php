@@ -12,6 +12,11 @@
 		public function consulta()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_GET['descripcion']))
 				$_SESSION['criterios']['descripcion_correos'] = $_GET['descripcion'];
 			elseif (!isset($_SESSION['criterios']['descripcion_correos']))
@@ -30,6 +35,11 @@
 		public function alta()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'fatal';
+			}
 			$this->contenido = new ContenidoCorreo($_POST);
 			if (isset($_POST['guardar']))
 			{
@@ -59,6 +69,11 @@
 		public function edicion()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'fatal';
+			}
 			ini_set('max_execution_time', '1800');
 			ini_set('upload_max_filesize', '20M');
 			ini_set('post_max_size', '20M');
@@ -217,6 +232,12 @@
 		
 		public function buscador()
 		{
+			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (!isset($_GET['consulta']) or !$_GET['consulta'])
 			{
 				$this->error = 'Error: El texto de la consulta no ha sido enviado';

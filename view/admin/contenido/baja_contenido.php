@@ -5,10 +5,12 @@
 		<strong>Tipo:</strong>
 	</div>
 	<div style="float: right; text-align: left; width: 80%;">
-		<?php if ($contenido->tipo == 2){ ?>
+		<?php if ($contenido->tipo == CONTENIDO_ENLACE){ ?>
 			Enlace
-		<?php }elseif ($contenido->tipo == 3){ ?>
+		<?php }elseif ($contenido->tipo == CONTENIDO_MENSAJE){ ?>
 			Mensaje
+		<?php }elseif ($contenido->tipo == CONTENIDO_OFERTA){ ?>
+			Oferta
 		<?php }else{ ?>
 			Contenido de texto
 		<?php } ?>

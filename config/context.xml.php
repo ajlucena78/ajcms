@@ -1,15 +1,15 @@
-﻿<?php
+<?php
 	if (!isset($XML_KEY) or $XML_KEY != date('Ymdh'))
 		exit();
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 <context>
-	<appname>MI WEB</appname>
+	<appname>MyPHP</appname>
 	<!-- Origen de datos -->
     <db>
-        <url value="mysql:dbname=datos;host=localhost" />
-        <username value="usuario" />
-        <password value="clave" />
+        <url value="mysql:dbname=myphp;host=localhost;charset=UTF8" />
+        <username value="myphp" />
+        <password value="myPhp2017" />
     </db>
 	<!-- Services -->
 	<service id="menuService" class="MenuService" />
@@ -40,6 +40,8 @@
 		<service ref="contenidoVideoService" />
 		<service ref="contenidoTextoService" />
 		<service ref="contenidoCorreoService" />
+		<service ref="contenidoEnlaceService" />
+		<service ref="imagenService" />
     </action>
     <action id="contenidoTextoAction" class="ContenidoTextoAction"></action>
     <action id="contenidoEnlaceAction" class="ContenidoEnlaceAction">
@@ -53,19 +55,20 @@
 		<service ref="menuService" />
 		<service ref="contenidoService" />
 		<service ref="usuarioService" />
+		<service ref="contenidoTextoService" />
     </action>
     <action id="imagenAction" class="ImagenAction">
 		<service ref="imagenService" />
 		<service ref="menuService" />
+		<service ref="contenidoImagenService" />
     </action>
 	<action id="publicAction" class="PublicAction">
-		<service ref="noticiaService" />
-		<service ref="contenidoService" />
 		<service ref="menuService" />
     </action>
     <action id="usuarioAction" class="UsuarioAction">
 		<service ref="usuarioService" />
 		<service ref="permisoService" />
+		<service ref="menuService" />
     </action>
     <action id="envioCorreoAction" class="EnvioCorreoAction">
 		<service ref="envioCorreoService" />
@@ -77,7 +80,7 @@
 		<service ref="listaCorreoService" />
 		<service ref="usuarioService" />
     </action>
-    <action id="CorreoAction" class="CorreoAction">
+    <action id="correoAction" class="CorreoAction">
 		<service ref="correoService" />
 		<service ref="listaCorreoService" />
 		<service ref="usuarioService" />

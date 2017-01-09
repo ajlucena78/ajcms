@@ -1,4 +1,4 @@
-<h1>Formulario de contacto</h1>
+<h1 class="title">Formulario de contacto</h1>
 <hr />
 <?php if ($error) { ?>
 	<p style="color: red; text-align: center;">
@@ -6,7 +6,7 @@
 		<?php echo formato_html($error); ?>
 	</p>
 <?php } ?>
-<div style="width: 100%;">
+<div style="width: 100%; text-align: left;">
 	<form method="post" action="<?php vlink('gracias'); ?>">
 		<br />
 		<div style="padding-bottom: 1%;">
@@ -38,7 +38,7 @@
 		<div>
 			<div>Mensaje:</div>
 			<div>
-				<textarea name="comentario" id="comentario" rows="6" cols="40" class="form-textarea" 
+				<textarea name="comentario" id="comentario" rows="10" cols="40" class="form-textarea" 
 						style="width: 100%;"><?php if (isset($_POST['comentario'])) 
 						echo $_POST['comentario']; ?></textarea>
 				</div>

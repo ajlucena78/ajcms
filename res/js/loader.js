@@ -20,6 +20,15 @@ function redim_loader()
 
 function close_loader()
 {
+	/*
+	var fondo = document.getElementById("fondo");
+	var alto = getWindowHeight();
+	if  (getPageHeight() > alto)
+		alto = getPageHeight();
+	resize_layer (fondo, "100%", alto + "px");
+	var contenido = document.getElementById("contenido");
+	resize_layer (contenido, (getWindowWidth() - 220) + "px", (getWindowHeight() - 100) + "px");
+	*/
 	document.getElementById('alert_loader').style.display = 'none';
 	document.getElementById('loader').style.display = 'none';
 }

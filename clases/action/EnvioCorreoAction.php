@@ -15,6 +15,11 @@
 		public function index()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_GET['descripcion']))
 				$_SESSION['criterios']['descripcion_envios'] = $_GET['descripcion'];
 			elseif (!isset($_SESSION['criterios']['descripcion_envios']))
@@ -35,6 +40,11 @@
 		public function programa()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'fatal';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id = $_POST['id'] + 0;
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
@@ -76,7 +86,7 @@
 					}
 					if (!$this->envio)
 					{
-						$this->error = 'El envío a editar no existe';
+						$this->error = 'El envÃ­o a editar no existe';
 						return 'fatal';
 					}
 					$this->envio->fecha_programa_envio = Fecha::convierte_BBDD_a_spa($this->envio->fecha_programa_envio, true);
@@ -146,11 +156,16 @@
 		public function baja()
 		{
 			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
 			if (isset($_POST['id']))
 				$_GET['id'] = $_POST['id'];
 			if (!isset($_GET['id']) or !$_GET['id'])
 			{
-				$this->error = 'No se ha indicado el ID para borrar el envío';
+				$this->error = 'No se ha indicado el ID para borrar el envÃ­o';
 				return 'error';
 			}
 			$this->envio = $this->envioCorreoService->findById($_GET['id']);
@@ -161,7 +176,7 @@
 			}
 			if (!$this->envio)
 			{
-				$this->error = 'El envío ha eliminar no existe';
+				$this->error = 'El envÃ­o ha eliminar no existe';
 				return 'error';
 			}
 			if (isset($_POST['borrar']))
@@ -172,6 +187,33 @@
 					return 'error';
 				}
 				return 'ok';
+			}
+			return 'success';
+		}
+		
+		public function informe()
+		{
+			$this->usuarioService->check_usuario();
+			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
+			{
+				$this->error = 'Acceso no autorizado';
+				return 'error';
+			}
+			if (!$_GET['id'])
+			{
+				$this->error = 'El identificador de envÃ­o no ha sido indicado';
+				return 'error';
+			}
+			$this->envio = $this->envioCorreoService->findById($_GET['id']);
+			if ($this->envio === false)
+			{
+				$this->error = $this->envioCorreoService->error();
+				return 'error';
+			}
+			if (!$this->envio)
+			{
+				$this->error = 'El envÃ­o ha consultar no existe';
+				return 'error';
 			}
 			return 'success';
 		}

@@ -11,7 +11,10 @@
 	<div style="height: 10px; clear: left;"></div>
 	<div style="height: 40px; float: right">
 		<input type="submit" value="Guardar lista" />
-		<input type="button" value="Volver" onclick="window.location.href = '<?php vlink('listas-correo'); ?>';" />
+		<input type="button" value="Exportar a archivo" onclick="window.location.href = '<?php 
+				vlink('exportar-lista-correo', array('id' => $lista->id_lista_correo)); ?>';" />
+		<input type="button" value="Volver" onclick="window.location.href = '<?php 
+				vlink('listas-correo'); ?>';" />
 	</div>
 </form>
 <?php if (count($lista->correos) > 0) { ?>

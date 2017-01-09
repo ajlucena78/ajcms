@@ -1,7 +1,7 @@
 <?php require_once APP_ROOT . 'clases/util/Texto.php'; ?>
-<div style="padding-bottom: 20px;">
+<div style="padding-bottom: 10pt;">
 	B&uacute;squeda de 
-	&quot;<span style="color: blue;"><?php echo formato_html($_GET['consulta']); ?></span>&quot;
+	&quot;<span style="color: blue;"><?php echo formato_html($_GET['consulta']); ?></span>&quot;:
 </div>
 <?php if (!$contenidos) { ?>
 	<div>
@@ -17,7 +17,8 @@
 			</h4>
 			<div>
 				<a href="<?php echo URL_APP . $contenido->enlace(); ?>">
-					<?php echo Texto::texto_abreviado(strip_tags($contenido->texto), 400); ?>
+					<?php echo Texto::texto_abreviado(strip_tags($contenido->texto . ' ' 
+							. $contenido->texto2), 260); ?>
 				</a>
 			</div>
 			<?php $ruta = $contenido->ruta(); ?>

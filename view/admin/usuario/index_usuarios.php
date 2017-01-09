@@ -1,3 +1,4 @@
+<?php require_once APP_ROOT . 'clases/util/Fecha.php';?>
 <form name="buscar" action="<?php vlink('usuarios'); ?>" method="get">
 	<input type="hidden" name="action" value="usuarios" />
 	<div style="text-align: right;">
@@ -52,7 +53,7 @@
 							<?php } ?>
 						</td>
 						<td style="text-align: center;">
-							<?php echo $usuario->fechaAcceso; ?>
+							<?php echo Fecha::convierte_BBDD_a_spa($usuario->fechaAcceso, true); ?>
 						</td>
 						<td style="text-align: center;">
 							<?php echo $usuario->ip; ?>

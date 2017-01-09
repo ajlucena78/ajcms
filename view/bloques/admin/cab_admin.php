@@ -2,7 +2,7 @@
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Administraci&oacute;n</title>
 		<link href="<?php echo URL_RES; ?>css/admin.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="<?php echo URL_RES; ?>js/funciones_capas.js"></script>
@@ -114,7 +114,7 @@
 								alt="Panel de administraci&oacute;n" />
 					</div>
 					<div style="float: left;">
-						<h1 style="color: white;">ubipol.com <span 
+						<h1 style="color: white;">MyPHP <span 
 								style="font-size: 0.4em; color: black;">Panel de Administraci&oacute;n</span></h1>
 					</div>
 				</div>
@@ -269,7 +269,10 @@
 				<?php }else{ ?>
 					<div id="submenu_5" class="menu">
 				<?php } ?>
-					<a href="http://www.facebook.com/PublicarPublicidadEstaticayDinamica" target="_blank">
+					<!--
+					<a href="<?php echo $pathRelativo; ?>?m=admin/facebook">
+					-->
+					<a href="https://www.facebook.com" target="_blank">
 						<img src="<?php echo $path_view; ?>imagenes/web/facebook.png" border="0" 
 								alt="Facebook" style="vertical-align: middle;" />
 						Facebook

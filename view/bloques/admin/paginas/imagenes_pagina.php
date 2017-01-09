@@ -22,9 +22,10 @@
 			<div style="height: 20px;"></div>
 			<div style="float: left; width: 25%;">
 				<img src="<?php echo URL_RES; ?>upload/<?php echo $directorio; ?>/<?php 
-						echo $imagen->idImagen; ?>.<?php echo $imagen->extension; ?>?rand=<?php 
-						echo rand(1, 10000); ?>" border="0" alt="<?php echo formato_html($imagen->titulo); ?>" 
-						style="width: 90%;" />
+						echo $imagen->idImagen; ?>.<?php echo $imagen->extension; ?><?php 
+						if (isset($_POST['idImagen']) and $imagen->idImagen == $_POST['idImagen']) { 
+						?>?rand=<?php echo rand(1, 10000); } ?>" 
+						alt="<?php echo formato_html($imagen->titulo); ?>" style="width: 90%;" />
 				<br />
 				Posici&oacute;n: <strong><?php echo $cont; ?></strong>
 			</div>
@@ -33,16 +34,16 @@
 					<label for="imagen">Localizaci&oacute;n del archivo *:</label>
 				</div>
 				<div style="float: right; text-align: right; width: 65%;">
-					<input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
+					<input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
 					<input type="file" name="imagen" id="imagen<?php echo $cont; ?>" style="width: 100%;" />
 				</div>
 				<div style="clear: both;">
-					<span style="color: #999;">* Sólo indicar si se va a cambiar por otro archivo de 
+					<span style="color: #999;">* S&oacute;lo indicar si se va a cambiar por otro archivo de 
 						imagen</span>
 				</div>
 				<div style="height: 10px; clear: both;"></div>
 				<div style="float: left; width: 35%;">
-					<label for="titulo">T&iacute;tulo:</label>
+					<label for="titulo">T&iacute;tulo (opcional):</label>
 				</div>
 				<div style="float: right; text-align: right; width: 65%;">
 					<input type="text" name="titulo" id="titulo<?php echo $cont; ?>" 
@@ -74,18 +75,27 @@
 				</div>
 				<div style="height: 10px; clear: both;"></div>
 				<div style="float: left; width: 35%;">
-					<label for="ampliable">Ampliable *:</label>
+					<label for="ampliable">Foto ampliable:</label>
 				</div>
 				<div style="float: right; width: 65%;">
 					<input type="checkbox" name="ampliable" id="ampliable<?php echo $cont; ?>" value="1" 
 							checked="checked" /> 
-					<span style="color: #999;">Marcar esta casilla si la foto que se va a subir se debe mostrar 
-						reducida y ampliable</span>
+					<span style="color: #999;">Marcar esta casilla si la foto a subir se debe mostrar reducida 
+							y ampliable</span>
 				</div>
 				<div style="height: 10px; clear: both;"></div>
-				<div style="float: left; width: 60%;">
+				<div style="float: left; width: 35%;">
+					<label for="oculta">Ocultar esta imagen:</label>
+				</div>
+				<div style="float: right; width: 65%;">
+					<input type="checkbox" name="oculta" id="oculta<?php echo $cont; ?>" value="1" <?php 
+							if ($imagen->oculta) { ?>checked="checked"<?php } ?> /> 
+					<span style="color: #999;">Marcar esta casilla si la foto no se debe mostrar</span>
+				</div>
+				<div style="height: 10px; clear: both;"></div>
+				<div style="float: left; width: 75%;">
 					<select name="id_contenido_destino" id="id_contenido_destino<?php  echo $cont; ?>" 
-							style="width: 45%;">
+							style="width: 55%;">
 						<option value="">Mover al contenido...</option>
 						<?php foreach ($contenidos as $VO) { ?>
 							<option value="<?php echo $VO->idContenido; ?>">
@@ -93,15 +103,15 @@
 							</option>
 						<?php } ?>
 					</select>
-					<input type="button" value="Mover" 
-							onclick="moverImagen(<?php echo $imagen->idImagen; ?>);" />
-					<input type="button" value="Cambiar orden" 
-							onclick="cambiarOrden(<?php echo $imagen->idImagen; ?>);" />
+					<input type="button" value="Mover" onclick="moverImagen(<?php 
+							echo $imagen->idImagen; ?>);" />
+					<input type="button" value="Cambiar orden" onclick="cambiarOrden(<?php 
+							echo $imagen->idImagen; ?>);" />
 				</div>
-				<div style="float: right; width: 40%; text-align: right;">
-					<input type="submit" value="Guardar imagen" />
+				<div style="float: right; width: 25%; text-align: right;">
+					<input type="submit" value="Guardar" />
 					<input type="button" value="Borrar" style="color: red;" 
-							onclick="if (window.confirm('¿Desvincular esta imagen del contenido?'))
+							onclick="if (window.confirm('Â¿Desvincular esta imagen del contenido?'))
 									{document.edicionImagen<?php echo $imagen->idImagen; 
 							?>.guardarImagen.value = 0; document.edicionImagen<?php 
 							echo $imagen->idImagen; ?>.borrarImagen.value = 1; document.edicionImagen<?php 

@@ -10,6 +10,7 @@
 		protected $videos;
 		protected $menus;
 		protected $usuario;
+		protected $privado;
 		
 		public function __construct($datos = null)
 		{
@@ -17,7 +18,7 @@
 			$this->pk['idContenido'] = 'auto';
 			$this->fk['imagenes'] = new FK('ContenidoImagen', OneToMany, 'idContenido', null, 'orden');
 			$this->fk['videos'] = new FK('ContenidoVideo', OneToMany, 'idContenido', null, 'orden');
-			$this->fk['menus'] = new FK('Menu', OneToMany, 'idMenu');
+			$this->fk['menus'] = new FK('Menu', OneToMany, 'idContenido');
 			$this->fk['usuario'] = new FK('Usuario', ManyToOne, 'idUsuario');
 		}
 		
@@ -35,7 +36,7 @@
 			if (!$this->idContenido)
 				return false;
 			$ruta = $this->descripcion;
-			//localizamos el menú al que pertenece el contenido
+			//localizamos el menÃº al que pertenece el contenido
 			if ($menu)
 			{
 				if (!$menu->idMenu)
@@ -48,7 +49,7 @@
 			}
 			if ($menu)
 			{
-				//se cargan todos los menús superiores hasta el raíz
+				//se cargan todos los menÃºs superiores hasta el raÃ­z
 				while (true)
 				{
 					if (!$menu or !$menu->padre)

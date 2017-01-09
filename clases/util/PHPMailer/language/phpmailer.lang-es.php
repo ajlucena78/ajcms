@@ -2,7 +2,7 @@
 /**
 * PHPMailer language file: refer to English translation for definitive list
 * Spanish version
-* Versión en español
+* VersiÃ³n en espaÃ±ol
 */
 
 $PHPMAILER_LANG['authenticate']         = 'Error SMTP: No se pudo autentificar.';

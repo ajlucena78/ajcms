@@ -2,8 +2,9 @@
 	function cambiarOrden(id)
 	{
 		var total = <?php echo count($contenido->imagenes); ?>;
-		var mensaje = "Indique la nueva posición de la imagen en el contenido (1 - " + total + "):";
-		mensaje += "\n\nEjemplo: \nSi hay 3 imágenes, indicará 1 para que sea la primera, 2 para que sea la de enmedio y 3 para que sea la última.";
+		var mensaje = "Indique la nueva posiciÃ³n de la imagen en el contenido (1 - " + total + "):";
+		mensaje += "\n\nEjemplo: \nSi hay 3 imÃ¡genes, indicarÃ¡ 1 para que sea la primera, 2 para que sea la de";
+		mensaje += " en medio y 3 para que sea la Ãºltima.";
 		var res = null;
 		if (res = 0 + window.prompt(mensaje, ""))
 		{
@@ -11,7 +12,7 @@
 				return(false);
 			if (res < 1 || res > total)
 			{
-				window.alert("Debe indicar un número entre 1 y " + total);
+				window.alert("Debe indicar un nÃºmero entre 1 y " + total);
 				cambiarOrden(id);
 			}
 			else
@@ -28,9 +29,9 @@
 	function cambiarOrdenVideo(id)
 	{
 		var total = <?php echo count($contenido->videos); ?>;
-		var mensaje = "Indique la nueva posición del vídeo en el contenido (1 - " + total + "):";
-		mensaje += "\n\nEjemplo: \nSi hay 3 vídeos, indicará 1 para que sea el primera, ";
-		mensaje += "2 para que sea el de enmedio y 3 para que sea el último.";
+		var mensaje = "Indique la nueva posiciÃ³n del vÃ­deo en el contenido (1 - " + total + "):";
+		mensaje += "\n\nEjemplo: \nSi hay 3 vÃ­deos, indicarÃ¡ 1 para que sea el primera, ";
+		mensaje += "2 para que sea el de enmedio y 3 para que sea el Ãºltimo.";
 		var res = null;
 		if (res = 0 + window.prompt(mensaje, ""))
 		{
@@ -38,7 +39,7 @@
 				return(false);
 			if (res < 1 || res > total)
 			{
-				window.alert("Debe indicar un número entre 1 y " + total);
+				window.alert("Debe indicar un nÃºmero entre 1 y " + total);
 				cambiarOrdenVideo(id);
 			}
 			else
@@ -56,7 +57,7 @@
 	{
 		if (document.getElementById('edicionImagen' + id).id_contenido_destino.value)
 		{
-			var mensaje = "¿Mover la imagen al contenido indicado?";
+			var mensaje = "Â¿Mover la imagen al contenido indicado?";
 			if (window.confirm(mensaje))
 			{
 				document.edicion.guardar.value = 0;
@@ -82,7 +83,7 @@
 	<a href="#imagenes"><img src="<?php echo URL_RES; ?>imagenes/admin/iconos/image.png" 
 				style="vertical-align: middle; border: 0px;" alt="Im&aacute;genes" /> Im&aacute;genes</a>
 	<span style="color: #AAA;"> | </span>
-	<a href="<?php echo URL_APP; ?>?referencia=<?php echo $contenido->referencia; ?>" target="_blank">
+	<a href="<?php echo URL_APP; ?><?php echo $contenido->permalink; ?>" target="_blank">
 		<img src="<?php echo URL_RES; ?>imagenes/admin/iconos/application_view_list.png" 
 				style="vertical-align: middle; border: 0px;" alt="Mostrar versi&oacute;n guardada en la web" />
 		Mostrar versi&oacute;n guardada en la web
@@ -98,42 +99,75 @@
 	<input type="hidden" name="id_video" value="0" />
 	<input type="hidden" name="moverImagen" value="0" />
 	<input type="hidden" name="id_contenido_destino" value="0" />
-	<div style="text-align: right; margin-bottom: 10px; float: left">
-		&nbsp;
-	</div>
-	<div style="float: left; width: 20%;">
+	<div style="margin-bottom: 5pt; clear: left;"></div>
+	<div style="float: left; width: 25%;">
 		<label for="descripcion">T&iacute;tulo:</label>
 	</div>
-	<div style="float: right; text-align: right; width: 80%;">
+	<div style="float: right; text-align: right; width: 75%;">
 		<input type="text" name="descripcion" id="descripcion" style="width: 100%;" 
 				value="<?php echo $contenido->descripcion; ?>" maxlength="255" />
 	</div>
 	<div style="height: 10px; clear: left;">
 	</div>
-	<div style="float: left; width: 20%;">
-		<label for="encabezado">Encabezado:</label>
+	<div style="float: left; width: 25%;">
+		<label for="encabezado">Encabezado (opcional):</label>
 	</div>
-	<div style="float: right; text-align: right; width: 80%;">
+	<div style="float: right; text-align: right; width: 75%;">
 		<input type="text" name="encabezado" id="encabezado" style="width: 100%;" 
 				value="<?php echo $contenido->encabezado; ?>" maxlength="255" />
 	</div>
 	<div style="height: 10px; clear: left;">
 	</div>
-	<div style="float: left; width: 20%;">
-		<label for="descripcion">Permalink:</label>
+	<div style="float: left; width: 25%;">
+		<label for="descripcion">Permalink (opcional):</label>
 	</div>
-	<div style="float: right; text-align: right; width: 80%;">
+	<div style="float: right; text-align: right; width: 75%;">
 		<input type="text" name="permalink" id="permalink" style="width: 100%;" 
 				value="<?php echo $contenido->permalink; ?>" maxlength="255" />
 	</div>
 	<div style="height: 10px; clear: left;"></div>
+	<div style="float: left; width: 25%;">
+		<label for="metadesc">Meta descripci&oacute;n (opcional):</label>
+	</div>
+	<div style="float: right; text-align: right; width: 75%;">
+		<input type="text" name="metadesc" id="metadesc" style="width: 100%;" 
+				value="<?php echo $contenido->metadesc; ?>" />
+	</div>
+	<div style="height: 10px; clear: left;"></div>
 	<div>
-		<label for="texto">Texto:</label>
+		<label for="texto">Texto principal (opcional):</label>
 	</div>
 	<div style="text-align: right; width: 100%;">
-		<textarea name="texto" id="texto" style="width: 100%;" cols="40"
-				rows="18"><?php echo $contenido->texto; ?></textarea>
+		<textarea name="texto" id="texto" style="width: 100%;" cols="40" rows="20"><?php 
+				echo $contenido->texto; ?></textarea>
 	</div>
+	<div style="height: 5px; clear: left;"></div>
+	<div style="text-align: right;">
+		<input type="checkbox" name="textoMovil" id="textoMovil" value="1" <?php if ($contenido->textoMovil) { ?>checked="checked"<?php } ?> />
+		<label for="textoMovil" class="gris">Mostrar el texto principal en la versi&oacute;n m&oacute;vil</label>
+	</div>
+	<div style="height: 10px; clear: left;"></div>
+	<div>
+		<label for="texto2">Texto secundario (opcional):</label>
+	</div>
+	<div style="text-align: right; width: 100%;">
+		<textarea name="texto2" id="texto2" style="width: 100%;" cols="40" rows="20"><?php 
+				echo $contenido->texto2; ?></textarea>
+	</div>
+	<div style="height: 10px; clear: left;"></div>
+	<div>
+		<label for="pie">Texto al pie de p&aacute;gina (opcional):</label>
+	</div>
+	<div style="text-align: right; width: 100%;">
+		<textarea name="pie" id="pie" style="width: 100%;" cols="40" rows="20"><?php 
+				echo $contenido->pie; ?></textarea>
+	</div>
+	<div style="height: 5px; clear: left;"></div>
+	<div style="text-align: right;">
+		<input type="checkbox" name="pieMovil" id="pieMovil" value="1" <?php if ($contenido->pieMovil) { ?>checked="checked"<?php } ?> />
+		<label for="pieMovil" class="gris">Mostrar el texto del pie en la versi&oacute;n m&oacute;vil</label>
+	</div>
+	<div style="height: 20px; clear: left;"></div>
 	<div style="height: 20px;"></div>
 	<div style="float: right">
 		<input type="submit" value="Guardar contenido" />
@@ -157,12 +191,12 @@
 		<label for="imagen">Localizaci&oacute;n del archivo:</label>
 	</div>
 	<div style="float: right; text-align: right; width: 70%;">
-		<input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
+		<input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
 		<input type="file" name="imagen" id="imagen" style="width: 100%;" />
 	</div>
 	<div style="height: 10px; clear: both;"></div>
 	<div style="float: left; width: 30%;">
-		<label for="titulo">T&iacute;tulo:</label>
+		<label for="titulo">T&iacute;tulo (opcional):</label>
 	</div>
 	<div style="float: right; text-align: right; width: 70%;">
 		<input type="text" name="titulo" id="titulo" style="width: 100%;" maxlength="255" 
@@ -173,9 +207,8 @@
 		<label for="tamano">Tama&ntilde;o en porcentaje (1 - 100):</label>
 	</div>
 	<div style="float: right; width: 70%;">
-		<input type="text" name="tamano" id="tamano" style="width: 10%;" maxlength="3"
-				value="<?php if (isset($imagen) and $imagen->tamano) echo formato_html($imagen->tamano); 
-					else echo '33'; ?>" /> %
+		<input type="text" name="tamano" id="tamano" style="width: 10%;" maxlength="3" 
+				value="<?php if (isset($imagen) and $imagen->tamano) echo formato_html($imagen->tamano); else echo '33'; ?>" /> %
 	</div>
 	<div style="height: 10px; clear: both;"></div>
 	<div style="float: left; width: 30%;">
@@ -191,12 +224,19 @@
 	</div>
 	<div style="height: 10px; clear: both;"></div>
 	<div style="float: left; width: 30%;">
-		<label for="ampliable">Ampliable:</label> 
+		<label for="ampliable">Foto ampliable:</label> 
 	</div>
 	<div style="float: right; width: 70%;">
 		<input type="checkbox" name="ampliable" id="ampliable" value="1" checked="checked" /> 
-		<span style="color: #999;">Marcar esta casilla si la foto que se va a subir se debe mostrar reducida y 
-			ampliable</span>
+		<span style="color: #999;">Marcar esta casilla si la foto a subir se debe mostrar reducida y ampliable</span>
+	</div>
+	<div style="height: 10px; clear: both;"></div>
+	<div style="float: left; width: 30%;">
+		<label for="oculta">Ocultar esta imagen:</label>
+	</div>
+	<div style="float: right; width: 70%;">
+		<input type="checkbox" name="oculta" id="oculta" value="1" <?php if (isset($imagen) and $imagen->oculta) { ?>checked="checked"<?php } ?> /> 
+		<span style="color: #999;">Marcar esta casilla si la foto no se debe mostrar</span>
 	</div>
 	<div style="height: 10px; clear: both;"></div>
 	<div style="height: 40px; float: right">
@@ -220,12 +260,12 @@
 		<label for="video">Localizaci&oacute;n del archivo FLV:</label>
 	</div>
 	<div style="float: right; text-align: right; width: 70%;">
-		<input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
+		<input type="hidden" name="MAX_FILE_SIZE" value="80000000" />
 		<input type="file" name="video" id="video" style="width: 100%;" />
 	</div>
 	<div style="height: 10px; clear: both;"></div>
 	<div style="float: left; width: 30%;">
-		<label for="titulo_video">T&iacute;tulo:</label>
+		<label for="titulo_video">T&iacute;tulo (opcional):</label>
 	</div>
 	<div style="float: right; text-align: right; width: 70%;">
 		<input type="text" name="titulo_video" id="titulo_video" maxlength="255" style="width: 100%;"

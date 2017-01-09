@@ -2,8 +2,8 @@
 	function cambiarOrden(id)
 	{
 		var total = <?php echo count($contenido->imagenes); ?>;
-		var mensaje = "Indique la nueva posición de la imagen en el contenido (1 - " + total + "):";
-		mensaje += "\n\nEjemplo: \nSi hay 3 imágenes, indicará 1 para que sea la primera, 2 para que sea la de enmedio y 3 para que sea la última.";
+		var mensaje = "Indique la nueva posiciÃ³n de la imagen en el contenido (1 - " + total + "):";
+		mensaje += "\n\nEjemplo: \nSi hay 3 imÃ¡genes, indicarÃ¡ 1 para que sea la primera, 2 para que sea la de enmedio y 3 para que sea la Ãºltima.";
 		var res = null;
 		if (res = 0 + window.prompt(mensaje, ""))
 		{
@@ -11,7 +11,7 @@
 				return(false);
 			if (res < 1 || res > total)
 			{
-				window.alert("Debe indicar un número entre 1 y " + total);
+				window.alert("Debe indicar un nÃºmero entre 1 y " + total);
 				cambiarOrden(id);
 			}
 			else
@@ -159,7 +159,7 @@
 			<div style="float: right;">
 				<input type="submit" value="Guardar imagen" />
 				<input type="button" value="Borrar imagen" style="color: red;" 
-						onclick="if (window.confirm('¿Desvincular esta imagen del contenido?')){document.edicionImagen<?php
+						onclick="if (window.confirm('Â¿Desvincular esta imagen del contenido?')){document.edicionImagen<?php
 						echo $imagen->idImagen; ?>.guardarImagen.value = 0; document.edicionImagen<?php 
 						echo $imagen->idImagen; ?>.borrarImagen.value = 1; document.edicionImagen<?php 
 						echo $imagen->idImagen; ?>.submit();}" />

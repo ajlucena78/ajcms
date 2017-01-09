@@ -4,8 +4,8 @@
 	function cambiarOrden(id)
 	{
 		var total = <?php echo count($noticiaVO->get_imagenes()); ?>;
-		var mensaje = "Indique la nueva posición de la imagen en el noticia (1 - " + total + "):";
-		mensaje += "\n\nEjemplo: \nSi hay 3 imágenes, indicará 1 para que sea la primera, 2 para que sea la de enmedio y 3 para que sea la última.";
+		var mensaje = "Indique la nueva posiciÃ³n de la imagen en el noticia (1 - " + total + "):";
+		mensaje += "\n\nEjemplo: \nSi hay 3 imÃ¡genes, indicarÃ¡ 1 para que sea la primera, 2 para que sea la de enmedio y 3 para que sea la Ãºltima.";
 		var res = null;
 		if (res = 0 + window.prompt(mensaje, ""))
 		{
@@ -13,7 +13,7 @@
 				return(false);
 			if (res < 1 || res > total)
 			{
-				window.alert("Debe indicar un número entre 1 y " + total);
+				window.alert("Debe indicar un nÃºmero entre 1 y " + total);
 				cambiarOrden(id);
 			}
 			else
@@ -175,14 +175,14 @@
 			<div style="height: 10px; clear: both;">
 			</div>
 			<div style="text-align: right;">
-				<span style="color: #999999;">* Sólo indicar si se va a cambiar por otro archivo de imagen</span>
+				<span style="color: #999999;">* S&oacute;lo indicar si se va a cambiar por otro archivo de imagen</span>
 			</div>
 			<div style="float: right">
 				<input type="button" value="Cambiar Orden" 
 						onclick="cambiarOrden(<?php echo $imagenVO->get_idImagen(); ?>);" />
 				<input type="submit" value="Guardar" />
 				<input type="button" value="Borrar" style="color: red;" 
-						onclick="if (window.confirm('¿Desvincular esta imagen del noticia?\nNota: La imagen no será borrada.')){document.edicionImagen<?php echo $imagenVO->get_idImagen(); ?>.guardarImagen.value = 0; document.edicionImagen<?php echo $imagenVO->get_idImagen(); ?>.borrarImagen.value = 1; document.edicionImagen<?php echo $imagenVO->get_idImagen(); ?>.submit();}" />
+						onclick="if (window.confirm('Â¿Desvincular esta imagen del noticia?\nNota: La imagen no serÃ¡ borrada.')){document.edicionImagen<?php echo $imagenVO->get_idImagen(); ?>.guardarImagen.value = 0; document.edicionImagen<?php echo $imagenVO->get_idImagen(); ?>.borrarImagen.value = 1; document.edicionImagen<?php echo $imagenVO->get_idImagen(); ?>.submit();}" />
 			</div>
 		</div>
 		<div style="clear: both;">

@@ -12,18 +12,56 @@
 		public function consulta()
 		{
 			$this->usuarioService->check_usuario();
+			if (isset($_POST['id']) and (0 + $_POST['id']))
+			{
+				//privar o hacer pÃºblico un contenido
+				$contenido = $this->contenidoService->findById($_POST['id']);
+				if (!$contenido)
+				{
+					$this->error = 'No se localiza el contenido con ID: ' . $_POST['id'];
+					return 'error';
+				}
+				if (isset($_POST['privada']) and $_POST['privada'])
+				{
+					$contenido->privado = true;
+				}
+				else
+				{
+					$contenido->privado = false;
+				}
+				if ($this->contenidoService->save($contenido, true) === false)
+				{
+					$this->error = $this->contenidoService->error;
+					return 'error';
+				}
+			}
 			if (isset($_GET['descripcion']))
+			{
 				$_SESSION['criterios']['descripcion_contenidos'] = $_GET['descripcion'];
+			}
 			elseif (!isset($_SESSION['criterios']['descripcion_contenidos']))
+			{
 				$_SESSION['criterios']['descripcion_contenidos'] = '';
+			}
 			$contenido = new ContenidoTexto();
 			if (isset($_SESSION['criterios']['descripcion_contenidos']) 
 					and $_SESSION['criterios']['descripcion_contenidos'])
+			{
 				$contenido->descripcion = $_SESSION['criterios']['descripcion_contenidos'];
-			$this->contenidos = $this->contenidoTextoService->find($contenido, null, 'descripcion'
-					, array('descripcion' => 1));
-			if ($this->contenidos === false)
+			}
+			$contenidos = $this->contenidoTextoService->find($contenido, null, 'descripcion', array('descripcion' => 1));
+			if ($contenidos === false)
+			{
 				return 'error';
+			}
+			$this->contenidos = array();
+			foreach ($contenidos as $contenido)
+			{
+				if ($contenido->tipo == CONTENIDO_TEXTO)
+				{
+					$this->contenidos[] = $contenido;
+				}
+			}
 			return 'success';
 		}
 		
@@ -31,24 +69,26 @@
 		{
 			$this->usuarioService->check_usuario();
 			$this->contenido = new ContenidoTexto($_POST);
-			if (isset($_POST['guardar']))
+			if (!isset($_POST['guardar']))
 			{
-				$this->contenido->tipo = CONTENIDO_TEXTO;
-				$this->contenido->usuario = $_SESSION['usuario'];
-				if (!$this->contenidoTextoService->valida($this->contenido))
-				{
-					$this->error = $this->contenidoTextoService->error();
-					return 'error';
-				}
-				if (!$this->contenidoTextoService->save($this->contenido))
-					return 'error';
-				else
-				{
-					header('Location:' . URL_APP . '?action=edicion-contenido-texto&id=' 
-							. $this->contenido->idContenido);
-					exit();
-				}
+				return 'error';
 			}
+			$this->contenido->tipo = CONTENIDO_TEXTO;
+			$this->contenido->usuario = $_SESSION['usuario'];
+			$this->contenido->textoMovil = (isset($_POST['textoMovil']) and $_POST['textoMovil']) ? true : false;
+			$this->contenido->pieMovil = (isset($_POST['pieMovil']) and $_POST['pieMovil']) ? true : false;
+			$this->contenido->privado = (isset($_POST['privado']) and $_POST['privado']) ? true : false;
+			if (!$this->contenidoTextoService->valida($this->contenido))
+			{
+				$this->error = $this->contenidoTextoService->error();
+				return 'error';
+			}
+			if (!$this->contenidoTextoService->save($this->contenido))
+			{
+				$this->error = $this->contenidoVideoService->error();
+				return 'fatal';
+			}
+			$_SESSION['id'] = $this->contenido->idContenido;
 			return 'success';
 		}
 		
@@ -63,6 +103,11 @@
 				$id = $_POST['id'] + 0;
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
 				$id = $_GET['id'] + 0;
+			elseif (isset($_SESSION['id']) and $_SESSION['id'] > 0)
+			{
+				$id = $_SESSION['id'] + 0;
+				unset($_SESSION['id']);
+			}
 			else
 			{
 				$this->error = 'Falta el dato idContenido a enviar por GET o POST';
@@ -89,10 +134,8 @@
 					$this->error = $this->contenidoImagenService->error();
 					return 'error';
 				}
-				else
-					$this->mensaje = 'El orden de la imagen ha sido cambiado';
 			}
-			//cambiar el orden de un vídeo
+			//cambiar el orden de un vÃ­deo
 			if (isset($_POST['cambiarOrdenVideo']) and $_POST['cambiarOrdenVideo'] == 1)
 			{
 				$campos = array();
@@ -106,8 +149,6 @@
 					$this->error = $this->contenidoVideoService->error();
 					return 'error';
 				}
-				else
-					$this->mensaje = 'El orden del video ha sido cambiado';
 			}
 			//desvincular una imagen
 			if (isset($_POST['borrarImagen']) and $_POST['borrarImagen'] == 1)
@@ -120,10 +161,8 @@
 					$this->error = $this->contenidoImagenService->error();
 					return 'error';
 				}
-				else
-					$this->mensaje = 'Imagen eliminada. \nRecuerde borrar la etiqueta [imagen] del texto';
 			}
-			//desvincular un vídeo
+			//desvincular un vÃ­deo
 			if (isset($_POST['borrarVideo']) and $_POST['borrarVideo'] == 1)
 			{
 				$campos = array();
@@ -149,10 +188,18 @@
 					$this->error = 'No se encuentra la imagen a editar';
 					return 'error';
 				}
-				$imagen->titulo = $_POST['titulo'];
+				if ($_POST['titulo'])
+				{
+					$imagen->titulo = $_POST['titulo'];
+				}
+				else
+				{
+					$imagen->titulo = $this->contenido->descripcion;
+				}
 				$imagen->alineamiento = $_POST['alineamiento'];
 				$imagen->tamano = $_POST['tamano'];
-				$imagen->ampliable((isset($_POST['ampliable']) and $_POST['ampliable']) ? '1' : '0');
+				$imagen->ampliable((isset($_POST['ampliable']) and $_POST['ampliable']) ? '1' : '0');	
+				$imagen->oculta = (isset($_POST['oculta']) and $_POST['oculta']) ? '1' : '0';
 				if (isset($_FILES['imagen']['name']) and $_FILES['imagen']['name'])
 				{
 					$datos = explode('.', $_FILES['imagen']['name']);
@@ -176,9 +223,8 @@
 					$this->error = $this->contenidoImagenService->error();
 					return 'error';
 				}
-				$this->mensaje = 'La imagen ha sido editada correctamente';
 			}
-			//editar un vídeo
+			//editar un vÃ­deo
 			if (isset($_POST['guardarVideo']) and $_POST['guardarVideo'] == 1)
 			{
 				$campos = array();
@@ -190,7 +236,14 @@
 					$this->error = 'No se encuentra el video a editar';
 					return 'error';
 				}
-				$video->titulo_video = $_POST['titulo_video'];
+				if ($_POST['titulo_video'])
+				{
+					$video->titulo_video = $_POST['titulo_video'];
+				}
+				else
+				{
+					$video->titulo_video = $this->contenido->descripcion;
+				}
 				$video->alineamiento = $_POST['alineamiento'];
 				$video->alto_video = $_POST['alto_video'];
 				$video->ancho_video = $_POST['ancho_video'];
@@ -217,15 +270,20 @@
 					$this->error = $this->contenidoVideoService->error();
 					return 'error';
 				}
-				$this->mensaje = 'El video ha sido editado correctamente';
 			}
-			//edicion del contenido
+			//ediciÃ³n del contenido
 			if (isset($_POST['guardar']))
 			{
 				$this->contenido->descripcion = $_POST['descripcion'];
 				$this->contenido->encabezado = $_POST['encabezado'];
 				$this->contenido->permalink = $_POST['permalink'];
 				$this->contenido->texto = $_POST['texto'];
+				$this->contenido->texto2 = $_POST['texto2'];
+				$this->contenido->metadesc = $_POST['metadesc'];
+				$this->contenido->pie = $_POST['pie'];
+				$this->contenido->textoMovil = (isset($_POST['textoMovil']) 
+						and $_POST['textoMovil']) ? true : false;
+				$this->contenido->pieMovil = (isset($_POST['pieMovil']) and $_POST['pieMovil']) ? true : false;
 				if (!$this->contenidoTextoService->valida($this->contenido))
 				{
 					$this->error = $this->contenidoTextoService->error();
@@ -236,7 +294,6 @@
 					$this->error = $this->contenidoTextoService->error();
 					return 'error';
 				}
-				$this->mensaje = 'Contenido editado';
 			}
 			//guardar una nueva imagen
 			if (isset($_POST['nuevaImagen']) and $_POST['nuevaImagen'])
@@ -252,7 +309,14 @@
 					else
 					{
 						$campos = array();
-						$campos['titulo'] = $_POST['titulo'];
+						if ($_POST['titulo'])
+						{
+							$campos['titulo'] = $_POST['titulo'];
+						}
+						else
+						{
+							$campos['titulo'] = $this->contenido->descripcion;
+						}
 						$campos['extension'] = $datos[1];
 						$campos['tam'] = $_FILES['imagen']['size'];
 						$campos['tipo'] = $_FILES['imagen']['type'];
@@ -262,6 +326,7 @@
 						$this->imagen->idContenido = $_POST['id'];
 						$this->imagen->ampliable((isset($_POST['ampliable']) 
 								and $_POST['ampliable']) ? '1' : '0');
+						$this->imagen->oculta = (isset($_POST['oculta']) and $_POST['oculta']) ? '1' : '0';
 						$this->imagen->tmp_dir($_FILES['imagen']['tmp_name']);
 						if (!$orden = $this->contenidoImagenService->max_orden($this->imagen))
 						{
@@ -281,9 +346,7 @@
 							$this->ancla = 'nueva_imagen';
 							return 'error';
 						}
-						$this->mensaje = 'La imagen ha sido subida correctamente. \n';
-						$this->mensaje .= 'Recuerde incluir la etiqueta [imagen] en el texto';
-						$this->imagen = new Imagen();
+						$this->imagen = new ContenidoImagen();
 					}
 				}
 				else
@@ -293,8 +356,9 @@
 					$this->ancla = 'nueva_imagen';
 					return 'error';
 				}
+				$this->ancla = 'nueva_imagen';
 			}
-			//guardar un nuevo vídeo
+			//guardar un nuevo vÃ­deo
 			if (isset($_POST['nuevoVideo']) and $_POST['nuevoVideo'])
 			{
 				if (isset($_FILES['video']['name']) and $_FILES['video']['name'])
@@ -302,11 +366,18 @@
 					$datos = explode('.', $_FILES['video']['name']);
 					if (count($datos) != 2)
 					{
-						$this->error = 'El nombre del vídeo no es correcto';
+						$this->error = 'El nombre del vÃ­deo no es correcto';
 						return 'error';
 					}
 					$campos = array();
-					$campos['titulo_video'] = $_POST['titulo_video'];
+					if ($_POST['titulo_video'])
+					{
+						$campos['titulo_video'] = $_POST['titulo_video'];
+					}
+					else
+					{
+						$campos['titulo_video'] = $this->contenido->descripcion;
+					}
 					$campos['extension'] = $datos[1];
 					$campos['tam'] = $_FILES['video']['size'];
 					$campos['tmp_dir'] = $_FILES['video']['tmp_name'];
@@ -338,11 +409,11 @@
 					}
 					$this->mensaje = 'El video ha sido subido correctamente. \n';
 					$this->mensaje .= 'Recuerde incluir la etiqueta [video] en el texto';
-					$this->video = new Video();
+					$this->video = new ContenidoVideo();
 				}
 				else
 				{
-					$this->error = 'No ha sido especificado el archivo de la película en formato FLV a subir';
+					$this->error = 'No ha sido especificado el archivo de la pelÃ­cula en formato FLV a subir';
 					$this->ancla = 'nuevo_video';
 					$this->video = new ContenidoVideo($_POST);
 					return 'error';
@@ -367,7 +438,6 @@
 						$this->error = $this->contenidoImagenService->error();
 						return 'error';
 					}
-					$this->mensaje = 'La imagen se ha movido al contenido indicado';
 				}
 			}
 			return 'success';
@@ -381,7 +451,7 @@
 				$this->error = 'Error: El texto de la consulta no ha sido enviado';
 				return 'error';
 			}
-			$_GET['consulta'] = str_replace('<space>', ' ', $_GET['consulta']);
+			$_GET['consulta'] = str_replace('[space]', ' ', $_GET['consulta']);
 			if (strlen(trim($_GET['consulta'])) < 3)
 			{
 				$this->error = 'Error: El texto de la consulta debe tener al menos 3 caracteres';

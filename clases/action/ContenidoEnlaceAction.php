@@ -26,6 +26,11 @@
 		{
 			$this->usuarioService->check_usuario();
 			$this->enlace = new ContenidoEnlace($_POST);
+			if ($this->enlace->tipoEnlace != 2)
+			{
+				$this->enlace->h1 = null;
+				$this->enlace->metadesc = null;
+			}
 			if (isset($_POST['guardar']))
 			{
 				$this->enlace->tipo = CONTENIDO_ENLACE;
@@ -69,6 +74,17 @@
 				$this->enlace->descripcion = $_POST['descripcion'];
 				$this->enlace->permalink = $_POST['permalink'];
 				$this->enlace->url = $_POST['url'];
+				$this->enlace->tipoEnlace = $_POST['tipoEnlace'];
+				if ($this->enlace->tipoEnlace == 2)
+				{
+					$this->enlace->h1 = $_POST['h1'];
+					$this->enlace->metadesc = $_POST['metadesc'];
+				}
+				else
+				{
+					$this->enlace->h1 = null;
+					$this->enlace->metadesc = null;
+				}
 				if (!$this->contenidoEnlaceService->valida($this->enlace))
 				{
 					$this->error = $this->contenidoEnlaceService->error();

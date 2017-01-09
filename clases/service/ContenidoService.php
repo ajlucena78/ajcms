@@ -1,40 +1,21 @@
 <?php
+	require_once 'clases/util/Cadena.php';
+	require_once 'clases/model/Imagen.php';
+	require_once 'clases/service/ImagenService.php';
+	
 	class ContenidoService extends Service
 	{
-		public function valida(Contenido & $contenido)
+		public function valida_contenido(Contenido & $contenido)
 		{
 			if (!$contenido->descripcion)
 			{
-				$this->error = 'Debe indicar el título del contenido';
+				$this->error = 'Debe indicar el tÃ­tulo del contenido';
 				return false;
 			}
 			if (!$contenido->usuario or !$contenido->usuario->idUsuario)
 			{
 				$this->error = 'Debe indicar el autor del contenido';
 				return false;
-			}
-			if ($contenido->permalink)
-			{
-				$contenido->permalink = str_replace(' ', '-', trim($contenido->permalink));
-				$contenido->permalink = str_replace('á', 'a', $contenido->permalink);
-				$contenido->permalink = str_replace('é', 'e', $contenido->permalink);
-				$contenido->permalink = str_replace('í', 'i', $contenido->permalink);
-				$contenido->permalink = str_replace('ó', 'o', $contenido->permalink);
-				$contenido->permalink = str_replace('ú', 'u', $contenido->permalink);
-				$contenido->permalink = str_replace('ñ', 'n', $contenido->permalink);
-				//el permalink no se puede repetir
-				$model = new Contenido();
-				$model->permalink = $contenido->permalink;
-				$res = $this->find($model);
-				if ($res)
-				{
-					$model = $res[0];
-					if ($model->idContenido != $contenido->idContenido)
-					{
-						$this->error = 'El permalink indicado ya está en uso';
-						return false;
-					}
-				}
 			}
 			if (!$contenido->idContenido)
 			{
@@ -52,7 +33,7 @@
 			}
 			else
 			{
-				//se trata de una edición
+				//se trata de una ediciÃ³n
 				if (!$contenido->referencia)
 				{
 					$this->error = 'La referencia del contenido no ha sido indicada';
@@ -63,6 +44,40 @@
 					$this->error = 'Debe indicar el ID del contenido';
 					return false;
 				}
+			}
+			if (!$contenido->permalink)
+			{
+				$contenido->permalink = Cadena::genera_permalink($contenido->descripcion);
+			}
+			else
+			{
+				$contenido->permalink = Cadena::genera_permalink($contenido->permalink);
+			}
+			//el permalink no se puede repetir
+			$model = new Contenido();
+			$model->permalink = $contenido->permalink;
+			$res = $this->find($model);
+			if ($res)
+			{
+				$model = $res[0];
+				if ($model->idContenido != $contenido->idContenido)
+				{
+					$this->error = 'El permalink indicado ya estÃ¡ en uso';
+					return false;
+				}
+			}
+			$img = new Imagen();
+			$img->permalink = $model->permalink;
+			$imagenService = new ImagenService();
+			$img = $imagenService->find($img);
+			if ($img and $img[0])
+			{
+				$this->error = 'El permalink indicado ya estÃ¡ en uso por una foto';
+				return false;
+			}
+			if (!$contenido->privado)
+			{
+				$contenido->privado = false;
 			}
 			return true;
 		}
