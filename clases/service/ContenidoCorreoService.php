@@ -1,5 +1,6 @@
 <?php
 	require_once APP_ROOT . 'clases/service/ContenidoService.php';
+	
 	class ContenidoCorreoService extends ContenidoService
 	{
 		public function valida(ContenidoCorreo $model)

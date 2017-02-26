@@ -11,7 +11,6 @@ function reloadwin()
 		if (!imagenes)
 			break;
 		var nImagenes = document.getElementById("nImagenes_" + contDivImg);
-		alert(nImagenes.value);
 		var tam = nImagenes.value * 220;
 		if (tam < (getWindowWidth() - 310))
 			imagenes.style.width = tam + "px";

@@ -119,9 +119,8 @@
 			<input type="hidden" name="borrarImagen" value="0" />
 			<div style="height: 20px;"></div>
 			<div style="float: left; width: 25%;">
-				<img src="<?php echo URL_RES; ?>upload/<?php echo $directorio; ?>/<?php 
-						echo $imagen->idImagen; ?>.<?php echo $imagen->extension; ?>" 
-						alt="<?php echo formato_html($imagen->titulo); ?>" style="width: 90%;" />
+				<img src="<?php echo $imagen->url(); ?>" alt="<?php echo formato_html($imagen->titulo); ?>" 
+						style="width: 90%;" />
 			</div>
 			<div style="float: right; width: 75%;">
 				<div style="float: left; width: 35%;">

@@ -6,12 +6,16 @@
 		protected $contenidos;
 		protected $contenido;
 		protected $imagen;
+		protected $archivo;
 		protected $video;
 		protected $ancla;
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_POST['id']) and (0 + $_POST['id']))
 			{
 				//privar o hacer público un contenido
@@ -31,7 +35,7 @@
 				}
 				if ($this->contenidoService->save($contenido, true) === false)
 				{
-					$this->error = $this->contenidoService->error;
+					$this->error = $this->contenidoService->error();
 					return 'error';
 				}
 			}
@@ -49,7 +53,8 @@
 			{
 				$contenido->descripcion = $_SESSION['criterios']['descripcion_contenidos'];
 			}
-			$contenidos = $this->contenidoTextoService->find($contenido, null, 'descripcion', array('descripcion' => 1));
+			$contenidos = $this->contenidoTextoService->find($contenido, null, 'descripcion'
+					, array('descripcion' => 1));
 			if ($contenidos === false)
 			{
 				return 'error';
@@ -67,7 +72,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			$this->contenido = new ContenidoTexto($_POST);
 			if (!isset($_POST['guardar']))
 			{
@@ -94,7 +102,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			ini_set('max_execution_time', '1800');
 			ini_set('upload_max_filesize', '20M');
 			ini_set('post_max_size', '20M');
@@ -176,6 +187,18 @@
 				else
 					$this->mensaje = 'Video eliminado \nRecuerde borrar la etiqueta [video] del texto';
 			}
+			//desvincular un archivo
+			if (isset($_POST['borrarArchivo']) and $_POST['borrarArchivo'] == 1)
+			{
+				$campos = array();
+				$campos['idContenido'] = $_POST['id'];
+				$campos['idArchivo'] = $_POST['idArchivo'];
+				if (!$this->contenidoArchivoService->removeById($campos))
+				{
+					$this->error = $this->contenidoArchivoService->error();
+					return 'error';
+				}
+			}
 			//editar una imagen
 			if (isset($_POST['guardarImagen']) and $_POST['guardarImagen'] == 1)
 			{
@@ -218,6 +241,7 @@
 					$this->error = $this->contenidoImagenService->error();
 					return 'error';
 				}
+				$imagen->idUsuario = $_SESSION['usuario']->idUsuario;
 				if (!$this->contenidoImagenService->subir_imagen($imagen))
 				{
 					$this->error = $this->contenidoImagenService->error();
@@ -265,9 +289,49 @@
 					$this->error = $this->contenidoVideoService->error();
 					return 'error';
 				}
+				$video->idUsuario = $_SESSION['usuario']->idUsuario;
 				if (!$this->contenidoVideoService->subir_video($video))
 				{
 					$this->error = $this->contenidoVideoService->error();
+					return 'error';
+				}
+			}
+			//editar un archivo
+			if (isset($_POST['guardarArchivo']) and $_POST['guardarArchivo'] == 1)
+			{
+				$campos = array();
+				$campos['idContenido'] = $_POST['id'];
+				$campos['idArchivo'] = $_POST['idArchivo'];
+				$archivo = $this->contenidoArchivoService->findById($campos);
+				if (!$archivo)
+				{
+					$this->error = 'No se encuentra el archivo a editar';
+					return 'error';
+				}
+				if (isset($_FILES['archivo']['name']) and $_FILES['archivo']['name'])
+				{
+					$datos = explode('.', $_FILES['archivo']['name']);
+					if (count($datos) != 2)
+					{
+						$this->error = 'El nombre del archivo no es correcto';
+						return 'error';
+					}
+					$archivo->nombre = $datos[0];
+					$archivo->extension = $datos[1];
+					$archivo->tam = $_FILES['archivo']['size'];
+					$archivo->tipo = $_FILES['archivo']['type'];
+					$archivo->tmp_dir($_FILES['archivo']['tmp_name']);
+				}
+				$archivo->titulo = $_POST['titulo'];
+				if (!$this->contenidoArchivoService->valida($archivo))
+				{
+					$this->error = $this->contenidoArchivoService->error();
+					return 'error';
+				}
+				$archivo->idUsuario = $_SESSION['usuario']->idUsuario;
+				if (!$this->contenidoArchivoService->subir_archivo($archivo))
+				{
+					$this->error = $this->contenidoArchivoService->error();
 					return 'error';
 				}
 			}
@@ -284,6 +348,7 @@
 				$this->contenido->textoMovil = (isset($_POST['textoMovil']) 
 						and $_POST['textoMovil']) ? true : false;
 				$this->contenido->pieMovil = (isset($_POST['pieMovil']) and $_POST['pieMovil']) ? true : false;
+				$this->contenido->idUsuario = $_SESSION['usuario']->idUsuario;
 				if (!$this->contenidoTextoService->valida($this->contenido))
 				{
 					$this->error = $this->contenidoTextoService->error();
@@ -323,7 +388,8 @@
 						$campos['alineamiento'] = $_POST['alineamiento'];
 						$campos['tamano'] = $_POST['tamano'];
 						$this->imagen = new ContenidoImagen($campos);
-						$this->imagen->idContenido = $_POST['id'];
+						$this->imagen->contenido = new Contenido();
+						$this->imagen->contenido->idContenido = $_POST['id'];
 						$this->imagen->ampliable((isset($_POST['ampliable']) 
 								and $_POST['ampliable']) ? '1' : '0');
 						$this->imagen->oculta = (isset($_POST['oculta']) and $_POST['oculta']) ? '1' : '0';
@@ -340,6 +406,7 @@
 							$this->ancla = 'nueva_imagen';
 							return 'error';
 						}
+						$this->imagen->idUsuario = $_SESSION['usuario']->idUsuario;
 						if (!$this->contenidoImagenService->subir_imagen($this->imagen))
 						{
 							$this->error = $this->contenidoImagenService->error();
@@ -395,6 +462,7 @@
 					}
 					$this->video->orden = $orden;
 					$this->video->activo_video = true;
+					$this->video->idUsuario = $_SESSION['usuario']->idUsuario;
 					if (!$this->contenidoVideoService->valida($this->video))
 					{
 						$this->error = $this->contenidoVideoService->error();
@@ -418,6 +486,54 @@
 					$this->video = new ContenidoVideo($_POST);
 					return 'error';
 				}
+			}
+			//guardar un nuevo archivo
+			if (isset($_POST['nuevoArchivo']) and $_POST['nuevoArchivo'])
+			{
+				if (isset($_FILES['archivo']['name']) and $_FILES['archivo']['name'])
+				{
+					$datos = explode('.', $_FILES['archivo']['name']);
+					if (count($datos) != 2)
+					{
+						$error = true;
+						$this->error = 'El nombre del archivo no es correcto';
+					}
+					else
+					{
+						$campos = array();
+						$campos['titulo'] = $_POST['titulo'];
+						$campos['nombre'] = $datos[0];
+						$campos['extension'] = $datos[1];
+						$campos['tam'] = $_FILES['archivo']['size'];
+						$campos['tipo'] = $_FILES['archivo']['type'];
+						$this->archivo = new ContenidoArchivo($campos);
+						$this->archivo->contenido = new Contenido();
+						$this->archivo->contenido->idContenido = $_POST['id'];
+						$this->archivo->tmp_dir($_FILES['archivo']['tmp_name']);
+						if (!$this->contenidoArchivoService->valida($this->archivo))
+						{
+							$this->error = $this->contenidoArchivoService->error();
+							$this->ancla = 'nuevo_archivo';
+							return 'error';
+						}
+						$this->archivo->idUsuario = $_SESSION['usuario']->idUsuario;
+						if (!$this->contenidoArchivoService->subir_archivo($this->archivo))
+						{
+							$this->error = $this->contenidoArchivoService->error();
+							$this->ancla = 'nuevo_archivo';
+							return 'error';
+						}
+						$this->archivo = new ContenidoArchivo();
+					}
+				}
+				else
+				{
+					$this->error = 'No ha sido especificado el archivo a subir';
+					$this->archivo = new ContenidoArchivo($_POST);
+					$this->ancla = 'nuevo_archivo';
+					return 'error';
+				}
+				$this->ancla = 'nueva_imagen';
 			}
 			//cambiar una imagen de contenido
 			if (isset($_POST['moverImagen']) and $_POST['moverImagen'])

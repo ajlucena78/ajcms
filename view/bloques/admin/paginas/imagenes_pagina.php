@@ -10,7 +10,6 @@
 	<div style="clear: both;"></div>
 	<?php $cont = 1; ?>
 	<?php foreach ($contenido->imagenes as $imagen) { ?>
-		<?php $directorio = floor($imagen->idImagen / 1000); ?>
 		<a name="imagen_<?php echo $imagen->idImagen; ?>"></a>
 		<form name="edicionImagen<?php echo $imagen->idImagen; ?>" 
 				action="<?php vlink('edicion-contenido-texto'); ?>#imagen_<?php echo $imagen->idImagen; ?>" 
@@ -21,8 +20,7 @@
 			<input type="hidden" name="borrarImagen" value="0" />
 			<div style="height: 20px;"></div>
 			<div style="float: left; width: 25%;">
-				<img src="<?php echo URL_RES; ?>upload/<?php echo $directorio; ?>/<?php 
-						echo $imagen->idImagen; ?>.<?php echo $imagen->extension; ?><?php 
+				<img src="<?php echo $imagen->url(); ?><?php 
 						if (isset($_POST['idImagen']) and $imagen->idImagen == $_POST['idImagen']) { 
 						?>?rand=<?php echo rand(1, 10000); } ?>" 
 						alt="<?php echo formato_html($imagen->titulo); ?>" style="width: 90%;" />
@@ -34,7 +32,7 @@
 					<label for="imagen">Localizaci&oacute;n del archivo *:</label>
 				</div>
 				<div style="float: right; text-align: right; width: 65%;">
-					<input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
+					<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
 					<input type="file" name="imagen" id="imagen<?php echo $cont; ?>" style="width: 100%;" />
 				</div>
 				<div style="clear: both;">

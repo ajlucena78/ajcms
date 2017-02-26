@@ -22,18 +22,18 @@ function carga(url, id, funcion, param, ocultar, add_html, ancla, retorno)
 	}
 	cargador.onreadystatechange = function()
 	{
-		//llamada a la funci髇 que carga la p醙ina
+		//llamada a la funci贸n que carga la p锟絞ina
 		cargaResultado(cargador, id, funcion, param, ocultar, add_html, ancla, clase);
 	};
 	url += '&ajax=1';
-	// m閠odos open y send
+	// m茅todos open y send
 	cargador.open('GET', url, true);
 	cargador.send(null);
 	if (!retorno)
 		return true;
 }
 
-//funci髇 que presenta la informaci髇
+//funci贸n que presenta la informaci贸n
 function cargaResultado(cargador, id, funcion, param, ocultar, add_html, ancla, clase)
 {
 	if (cargador.readyState == 4 && (cargador.status == 200 || window.location.href.indexOf("http") == -1))
@@ -149,7 +149,7 @@ function inicia_cargador()
 		}
 		catch (e)
 		{
-			//caso de versi髇 antigua de internet explorer
+			//caso de versi贸n antigua de internet explorer
 			try
 			{
 				cargador = new ActiveXObject("Microsoft.XMLHTTP");

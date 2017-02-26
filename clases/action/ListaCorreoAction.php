@@ -7,7 +7,10 @@
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -40,7 +43,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -67,7 +73,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -109,7 +118,10 @@
 		
 		public function baja()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -149,7 +161,10 @@
 		
 		public function exportar()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';

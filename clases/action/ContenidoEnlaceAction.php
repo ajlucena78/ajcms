@@ -12,7 +12,10 @@
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			$this->enlaces = $this->contenidoEnlaceService->findAll('descripcion');
 			if ($this->enlaces === false)
 			{
@@ -24,7 +27,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			$this->enlace = new ContenidoEnlace($_POST);
 			if ($this->enlace->tipoEnlace != 2)
 			{
@@ -53,7 +59,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id = $_POST['id'] + 0;
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)

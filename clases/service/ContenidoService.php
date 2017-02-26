@@ -1,7 +1,7 @@
 <?php
 	require_once 'clases/util/Cadena.php';
-	require_once 'clases/model/Imagen.php';
-	require_once 'clases/service/ImagenService.php';
+	require_once 'clases/model/ContenidoImagen.php';
+	require_once 'clases/service/ContenidoImagenService.php';
 	
 	class ContenidoService extends Service
 	{
@@ -49,10 +49,6 @@
 			{
 				$contenido->permalink = Cadena::genera_permalink($contenido->descripcion);
 			}
-			else
-			{
-				$contenido->permalink = Cadena::genera_permalink($contenido->permalink);
-			}
 			//el permalink no se puede repetir
 			$model = new Contenido();
 			$model->permalink = $contenido->permalink;
@@ -66,19 +62,16 @@
 					return false;
 				}
 			}
-			$img = new Imagen();
+			$img = new ContenidoImagen();
 			$img->permalink = $model->permalink;
-			$imagenService = new ImagenService();
-			$img = $imagenService->find($img);
+			$cImagenService = new ContenidoImagenService();
+			$img = $cImagenService->find($img);
 			if ($img and $img[0])
 			{
 				$this->error = 'El permalink indicado ya está en uso por una foto';
 				return false;
 			}
-			if (!$contenido->privado)
-			{
-				$contenido->privado = false;
-			}
+			$contenido->privado = 0 + $contenido->privado; 
 			return true;
 		}
 	}

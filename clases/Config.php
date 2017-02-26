@@ -30,7 +30,8 @@
 			}
 			//carga de los ficheros de configuración y mapa de acciones
 			$xml = $this->carga_xml('context.xml.php');
-			$this->app_name = strval(utf8_decode($xml->appname));
+			//TODO $this->app_name = strval(utf8_decode($xml->appname));
+			$this->app_name = strval($xml->appname);
 			//conexión a la base de datos
 			$this->db_url = '' . $xml->db->url->attributes();
 			$this->db_username = '' . $xml->db->username->attributes();

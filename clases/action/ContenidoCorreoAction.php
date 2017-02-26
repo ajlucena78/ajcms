@@ -11,7 +11,10 @@
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -34,7 +37,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -68,7 +74,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -203,7 +212,8 @@
 					$campos['tipo'] = $_FILES['imagen']['type'];
 					$campos['alineamiento'] = $_POST['alineamiento'];
 					$this->imagen = new ContenidoImagen($campos);
-					$this->imagen->idContenido = $_POST['id'];
+					$this->imagen->contenido = new Contenido();
+					$this->imagen->contenido->idContenido = $_POST['id'];
 					$this->imagen->tmp_dir($_FILES['imagen']['tmp_name']);
 					$this->imagen->tamano = 100;
 					if (!$orden = $this->contenidoImagenService->max_orden($this->imagen))
@@ -224,7 +234,7 @@
 					}
 					$this->mensaje = 'La imagen ha sido subida correctamente. \n';
 					$this->mensaje .= 'Recuerde incluir la etiqueta [imagen] en el texto';
-					$this->imagen = new Imagen();
+					$this->imagen = new ContenidoImagen();
 				}
 			}
 			return 'success';
@@ -232,7 +242,10 @@
 		
 		public function buscador()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';

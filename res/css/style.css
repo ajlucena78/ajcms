@@ -360,8 +360,6 @@ div.content th img {
   float: right;
   width: 40%;
   text-align: right;
-  /* padding-right: 1%; */
-  /* margin-top: 10pt; */
 }
 
 #primary-menu-wrapper {
@@ -369,7 +367,6 @@ div.content th img {
   position: relative;
   width: 100%;	/* 960px; */
   z-index: 5;    /* fixes IE z-index bug */
-  /* background-color: white; */
 }
 
 
@@ -379,9 +376,7 @@ div.content th img {
 
 #preface
 {
-	background: url('../imagenes/web/spain.png') repeat-x top;
 	min-height: 20px;
-	/* padding-left: 15pt; */
 }
 
 #preface-wrapper {
@@ -621,11 +616,11 @@ body.layout-main #content-wrapper {
 
 body.layout-first-main #sidebar-first {
   margin: 1% 1% 0 0;
-  width: 23%;	/* 240px; */
+  width: 23%;
 }
 
 .sidebar-first-imagen {
-  margin: 0;	/* 0 1% 0 0; */
+  margin: 0;
   float: left;
 }
 
@@ -635,7 +630,7 @@ body.layout-first-main #sidebar-first {
 }
 
 body.layout-first-main #content-wrapper {
-  margin: 1% 0 0 0;    /* LTR */
+  margin: 1% 0 0 0;
   width: 74%;
 }
 
@@ -1038,7 +1033,6 @@ body.layout-main-last #sidebar-last div.rounded-block-bottom-left,
 body.layout-main-last #sidebar-last div.rounded-block-bottom-right { 
   background: none;
   font-size: inherit;
-  /* height: auto; */
 }
 
 div.rounded-block-top-left, 
@@ -1960,7 +1954,6 @@ blockquote a:link {
 .content-imagen
 {
 	text-align: center;
-	/* height: 180pt; */
 }
 
 ul.submenu
@@ -2017,9 +2010,9 @@ ul.submenu
 	margin-bottom: 10pt !important;
 }
 
-#foto-fondo-motos
+#foto-fondo
 {
-	background: url('../imagenes/web/motos.png') repeat-x 0 0pt;
+	//background: url('../imagenes/web/fondo.png') repeat-x 0 0pt;
 	background-position: center center;
 	background-size: 100%;
 }

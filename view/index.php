@@ -26,7 +26,7 @@
 								, substr(formato_texto(strip_tags($res)), 0, 200))) . "..."; ?>" />
 			<?php } ?>
 		<?php } ?>
-		<?php include(PATH_VIEW . "/bloques/cabecera_index.php") ?>
+		<?php include PATH_VIEW . '/bloques/cabecera_index.php'; ?>
 		<script type="text/javascript" src="<?php echo URL_RES; ?>js/funciones_capas.js"></script>
 		<script type="text/javascript" src="<?php echo URL_RES; ?>js/imagenes.js"></script>
 		<script type="text/javascript" src="<?php echo URL_RES; ?>js/opacity.js"></script>
@@ -145,8 +145,22 @@
 													?>
 												</h1>
 											<?php } ?>
+											<?php if ($contenido->archivos) { ?>
+												<div style="text-align: left;">
+													<strong>Descargas:</strong>
+													<?php foreach ($contenido->archivos as $archivo) { ?>
+														<br />
+														<a href="<?php echo $archivo->enlace(); ?>">
+															<img src="<?php echo URL_RES; ?>imagenes/admin/iconos/page.png" 
+																style="vertical-align: middle; border: 0;" alt="<?php echo formato_html($archivo->titulo); ?>" />
+															<?php echo formato_html($archivo->nombre); ?>.<?php echo $archivo->extension; ?>
+														</a>
+														(<?php echo formato_html($archivo->titulo); ?>, <?php echo number_format(round($archivo->tam / 1024)); ?> Kb)
+													<?php } ?>
+												</div>
+											<?php } ?>
 											<?php if ($contenido->tipo == CONTENIDO_FICHERO) { ?>
-												<?php include(APP_ROOT . "modulos/" . $contenido->ruta . ".php"); ?>
+												<?php include APP_ROOT . 'modulos/' . $contenido->ruta . '.php'; ?>
 											<?php }else{ ?>
 												<?php $i = 0; ?>
 												<?php echo $contenido->texto_procesado(null, null, $contenido->texto, false, $i); ?>

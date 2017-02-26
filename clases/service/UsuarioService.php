@@ -1,26 +1,13 @@
 <?php
 	class UsuarioService extends Service
-	{
-		private function datosInvalidos($action = 'inicio-sesion')
-		{
-			/*
-			header('WWW-Authenticate: Basic realm="Acceso para usuarios"');
-			header('HTTP /1.1 401 Unauthorized');
-			*/
-			echo '<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" ';
-			echo '"http://www.wapforum.org/DTD/xhtml-mobile10.dtd">';
-			echo '<html xmlns="http://www.w3.org/1999/xhtml"><head><title>ACCESO DENEGADO</title></head>';
-			echo '<body>';
-			echo '<div style="text-align: center;"><h1 style="color:red; text-decoration: blink;">ACCESO '
-					. 'DENEGADO</h1>IP '. $_SERVER['REMOTE_ADDR'] 
-					. ' registrada</div><script>setTimeout("window.location = \'' . URL_APP . $action 
-					. '\';", 5000);</script>';
-			echo '</body>';
-			exit();
-		}
-		
+	{	
 		public function check_redirect()
 		{
+			if (isset($_SERVER['PHP_AUTH_USER']))
+			{
+				$_POST['PHP_AUTH_USER'] = $_SERVER['PHP_AUTH_USER'];
+				$_POST['PHP_AUTH_PW'] = $_SERVER['PHP_AUTH_PW'];
+			}
 			if (isset($_SESSION['acceso_usuario_concedido']) and $_SESSION['acceso_usuario_concedido'])
 			{
 				return true;
@@ -71,12 +58,13 @@
 			$usuario = $this->find($usuario);
 			if (!$usuario)
 			{
-				$this->datosInvalidos('inicio-sesion-adm');
+				$this->error = 'Los datos de usuario aportados no son correctos';
+				return false;
 			}
 			$usuario = $usuario[0];
 			if ($usuario->permiso->idPermiso == PERMISO_SOCIO)
 			{
-				$this->datosInvalidos('inicio-sesion-adm');
+				return false;
 			}
 			if (!isset($_SESSION['acceso_usuario_concedido']) or !$_SESSION['acceso_usuario_concedido'])
 			{
@@ -111,7 +99,8 @@
 			$usuario = $this->find($usuario);
 			if (!$usuario)
 			{
-				$this->datosInvalidos();
+				$this->error = 'Los datos de usuario aportados no son correctos';
+				return false;
 			}
 			if (!isset($_SESSION['acceso_usuario_concedido']) or !$_SESSION['acceso_usuario_concedido'])
 			{

@@ -16,12 +16,17 @@
 			$_SESSION['acceso_usuario_concedido'] = false;
 			$_SESSION['PHP_AUTH_USER'] = null;
 			$_SESSION['PHP_AUTH_PW'] = null;
+			$_SERVER['PHP_AUTH_USER'] = null;
+			$_SERVER['PHP_AUTH_PW'] = null;
 			return 'success';
 		}
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -45,7 +50,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -88,7 +96,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -162,7 +173,10 @@
 		
 		public function baja()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if ($_SESSION['usuario']->permiso->idPermiso != PERMISO_ADMINISTRADOR)
 			{
 				$this->error = 'Acceso no autorizado';
@@ -221,9 +235,9 @@
 			if (!$this->usuarioService->check_socio(true))
 			{
 				$this->menus = $this->menuService->menus_index();
+				$this->error = $this->usuarioService->error();
 				return 'error';
 			}
-			//TODO $_SESSION['acceso_usuario_concedido'] = false;
 			return 'success';
 		}
 		
@@ -246,10 +260,9 @@
 			$_SESSION['PHP_AUTH_PW'] = md5(trim($_POST['PHP_AUTH_PW']));
 			if (!$this->usuarioService->check_usuario(true))
 			{
-				$this->menus = $this->menuService->menus_index();
+				$this->error = $this->usuarioService->error();
 				return 'error';
 			}
-			//TODO $_SESSION['acceso_usuario_concedido'] = false;
 			return 'success';
 		}
 	}

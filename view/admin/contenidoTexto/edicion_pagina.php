@@ -77,16 +77,22 @@
 	<a href="#nuevo_video"><img src="<?php echo URL_RES; ?>imagenes/admin/iconos/film_add.png" 
 				style="vertical-align: middle; border: 0px;" alt="Nuevo video" /> Nuevo v&iacute;deo</a>
 	<span style="color: #AAA;"> | </span>
+	<a href="#nuevo_archivo"><img src="<?php echo URL_RES; ?>imagenes/admin/iconos/page_add.png" 
+				style="vertical-align: middle; border: 0pt;" alt="Nuevo archivo" /> Nuevo archivo</a>
+	<span style="color: #AAA;"> | </span>
 	<a href="#videos"><img src="<?php echo URL_RES; ?>imagenes/admin/iconos/film.png" 
 				style="vertical-align: middle; border: 0px;" alt="Videos" /> Videos</a>
 	<span style="color: #AAA;"> | </span>
 	<a href="#imagenes"><img src="<?php echo URL_RES; ?>imagenes/admin/iconos/image.png" 
 				style="vertical-align: middle; border: 0px;" alt="Im&aacute;genes" /> Im&aacute;genes</a>
 	<span style="color: #AAA;"> | </span>
+	<a href="#archivos"><img src="<?php echo URL_RES; ?>imagenes/admin/iconos/page.png" 
+				style="vertical-align: middle; border: 0pt;" alt="Archivos adjuntos" /> Archivos</a>
+	<span style="color: #AAA;"> | </span>
 	<a href="<?php echo URL_APP; ?><?php echo $contenido->permalink; ?>" target="_blank">
 		<img src="<?php echo URL_RES; ?>imagenes/admin/iconos/application_view_list.png" 
 				style="vertical-align: middle; border: 0px;" alt="Mostrar versi&oacute;n guardada en la web" />
-		Mostrar versi&oacute;n guardada en la web
+			Ver versi&oacute;n guardada
 	</a>
 </div>
 <form name="edicion" action="<?php vlink('edicion-contenido-texto'); ?>" method="post">
@@ -164,7 +170,8 @@
 	</div>
 	<div style="height: 5px; clear: left;"></div>
 	<div style="text-align: right;">
-		<input type="checkbox" name="pieMovil" id="pieMovil" value="1" <?php if ($contenido->pieMovil) { ?>checked="checked"<?php } ?> />
+		<input type="checkbox" name="pieMovil" id="pieMovil" value="1" 
+				<?php if ($contenido->pieMovil) { ?>checked="checked"<?php } ?> />
 		<label for="pieMovil" class="gris">Mostrar el texto del pie en la versi&oacute;n m&oacute;vil</label>
 	</div>
 	<div style="height: 20px; clear: left;"></div>
@@ -172,8 +179,8 @@
 	<div style="float: right">
 		<input type="submit" value="Guardar contenido" />
 		&nbsp;
-		<input type="button" value="Volver" 
-				onclick="window.location.href = '<?php vlink('contenidos-texto'); ?>';" />
+		<input type="button" value="Volver" onclick="window.location.href = '<?php 
+				vlink('contenidos-texto'); ?>';" />
 	</div>
 	<div style="clear: both; height: 15px;"></div>
 </form>
@@ -208,7 +215,8 @@
 	</div>
 	<div style="float: right; width: 70%;">
 		<input type="text" name="tamano" id="tamano" style="width: 10%;" maxlength="3" 
-				value="<?php if (isset($imagen) and $imagen->tamano) echo formato_html($imagen->tamano); else echo '33'; ?>" /> %
+				value="<?php if (isset($imagen) and $imagen->tamano) echo formato_html($imagen->tamano); 
+				else echo '33'; ?>" /> %
 	</div>
 	<div style="height: 10px; clear: both;"></div>
 	<div style="float: left; width: 30%;">
@@ -242,7 +250,8 @@
 	<div style="height: 40px; float: right">
 		<input type="submit" value="Subir imagen" />
 		&nbsp;
-		<input type="button" value="Volver" onclick="window.location.href = '?m=admin/contenidos/index';" />
+		<input type="button" value="Volver" 
+				onclick="window.location.href = '<?php vlink('contenidos-texto'); ?>';" />
 	</div>
 	<div style="clear: left;"></div>
 </form>
@@ -306,7 +315,41 @@
 		<input type="submit" value="Subir video" />
 		&nbsp;
 		<input type="button" value="Volver" 
-				onclick="window.location.href = '<?php vlink('contenido-texto'); ?>';" />
+				onclick="window.location.href = '<?php vlink('contenidos-texto'); ?>';" />
+	</div>
+	<div style="clear: left;"></div>
+</form>
+<div style="clear: both;">
+	<hr />
+</div>
+<a name="nuevo_archivo"></a>
+<form name="nuevoArchivo" action="<?php vlink('edicion-contenido-texto'); ?>" method="post" 
+		enctype="multipart/form-data">
+	<input type="hidden" name="id" value="<?php echo $contenido->idContenido; ?>" />
+	<input type="hidden" name="idArchivo" value="0" />
+	<input type="hidden" name="nuevoArchivo" value="1" />
+	<h4>Subir nuevo archivo</h4>
+	<div style="float: left; width: 30%;">
+		<label for="archivo">Localizaci&oacute;n del archivo:</label>
+	</div>
+	<div style="float: right; text-align: right; width: 70%;">
+		<input type="hidden" name="MAX_FILE_SIZE" value="80000000" />
+		<input type="file" name="archivo" id="archivo" style="width: 100%;" />
+	</div>
+	<div style="height: 10px; clear: both;"></div>
+	<div style="float: left; width: 30%;">
+		<label for="titulo">T&iacute;tulo:</label>
+	</div>
+	<div style="float: right; text-align: right; width: 70%;">
+		<input type="text" name="titulo" id="titulo" style="width: 100%;" maxlength="255" 
+				value="<?php if (isset($archivo)) echo formato_html($archivo->titulo); ?>" />
+	</div>
+	<div style="height: 10px; clear: both;"></div>
+	<div style="height: 40px; float: right">
+		<input type="submit" value="Subir archivo" />
+		&nbsp;
+		<input type="button" value="Volver" 
+				onclick="window.location.href = '<?php vlink('contenidos-texto'); ?>';" />
 	</div>
 	<div style="clear: left;"></div>
 </form>
@@ -315,3 +358,4 @@
 </div>
 <?php include PATH_VIEW . 'bloques/admin/paginas/videos_pagina.php'; ?>
 <?php include PATH_VIEW . 'bloques/admin/paginas/imagenes_pagina.php'; ?>
+<?php include PATH_VIEW . 'bloques/admin/paginas/archivos_pagina.php'; ?>

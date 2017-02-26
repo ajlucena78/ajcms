@@ -2,7 +2,7 @@
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Administraci&oacute;n</title>
 		<link href="<?php echo URL_RES; ?>css/admin.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="<?php echo URL_RES; ?>js/funciones.js"></script>
@@ -260,7 +260,7 @@
 					<?php } */ ?>
 					<!-- facebook -->
 					<div id="submenu_5" class="menu">
-						<a href="https://www.facebook.com/" target="_blank">
+						<a href="https://www.facebook.com" target="_blank">
 							<img src="<?php echo URL_RES; ?>imagenes/web/facebook.png" border="0" 
 									alt="Facebook" style="vertical-align: middle;" />
 							Facebook

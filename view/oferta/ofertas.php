@@ -4,12 +4,9 @@
 		<div>
 			<?php if (count($oferta->imagenes) > 0) { ?>
 				<?php $res = $oferta->imagenes(0); ?>
-				<?php $directorio = floor($res->idImagen / 1000); ?>
 				<div style="float: left; width: 30%;">
 					<a href="<?php echo URL_APP; ?>?action=oferta&amp;id=<?php echo $oferta->idContenido; ?>">
-						<img src="<?php echo URL_RES; ?>upload/<?php echo $directorio; ?>/<?php 
-								echo $res->idImagen; ?>.<?php 
-								echo $res->extension; ?>"
+						<img src="<?php echo $res->url(); ?>" 
 								alt="<?php echo formato_html($oferta->descripcion); ?>" style="width: 95%;" />
 					</a>
 				</div>

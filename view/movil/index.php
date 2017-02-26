@@ -1,9 +1,9 @@
-<?php echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<?php include PATH_VIEW . 'bloques/google_tag_manager_head.php'; ?>
-		<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+		<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />
 		<title><?php
 			if (isset($enlace))
 				echo formato_html($enlace->h1);
@@ -18,7 +18,6 @@
 		?></title>
 		<meta name="keywords" content="MyPHP" />
 		<link type="text/css" rel="stylesheet" media="all" href="<?php echo URL_RES; ?>css/movil.css" />
-		<link type="text/css" rel="stylesheet" media="all" href="<?php echo URL_RES; ?>css/slidesjs.css" />
 		<?php if (isset($imagen)) { ?>
 			<meta name="description" content="<?php echo str_replace('"', "'", $imagen->titulo); ?>. REF:<?php 
 					echo $imagen->idImagen; ?>. <?php 
@@ -61,12 +60,13 @@
 		<?php include PATH_VIEW . 'bloques/google_tag_manager_body.php'; ?>
 		<div id="fb-root"></div>
 		<script>(function(d, s, id) {
-		  var js, fjs = d.getElementsByTagName(s)[0];
-		  if (d.getElementById(id)) return;
-		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v2.8";
-		  fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));</script>
+			var js, fjs = d.getElementsByTagName(s)[0];
+		  	if (d.getElementById(id)) return;
+		  	js = d.createElement(s); js.id = id;
+		  	js.src = "//connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v2.8";
+		  	fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
 		<?php if (!isset($_SESSION['uso_cookies'])) { ?>
 			<div id="cookies">
 				<strong>USO DE COOKIES:</strong> Usamos cookies propias y de terceros para mejorar la 
@@ -126,8 +126,25 @@
 						?>
 					</h1>
 				<?php } ?>
+				<?php if ($contenido->archivos) { ?>
+					<div style="text-align: left; margin: 0; padding: 0;">
+						<strong>Descargas:</strong>
+						<?php foreach ($contenido->archivos as $archivo) { ?>
+							<div style="margin: 10pt 0 0 0; padding: 0;">
+								<?php echo formato_html($archivo->titulo); ?>:
+								<br />
+								<a href="<?php echo $archivo->enlace(); ?>">
+									<img src="<?php echo URL_RES; ?>imagenes/admin/iconos/page.png" 
+										style="vertical-align: middle; border: 0;" alt="<?php echo formato_html($archivo->titulo); ?>" />
+									<?php echo formato_html($archivo->nombre); ?>.<?php echo $archivo->extension; ?>
+								</a>
+								(<?php echo number_format(round($archivo->tam / 1024)); ?> Kb)
+							</div>
+						<?php } ?>
+					</div>
+				<?php } ?>
 				<?php if ($contenido->tipo == CONTENIDO_FICHERO) { ?>
-					<?php include(APP_ROOT . "modulos/" . $contenido->ruta . ".php"); ?>
+					<?php include APP_ROOT . 'modulos/' . $contenido->ruta . '.php'; ?>
 				<?php }else{ ?>
 					<?php $i = 0; ?>
 					<?php if ($contenido->texto and $contenido->textoMovil) { ?>
@@ -139,6 +156,11 @@
 						<div id="leer_mas_boton" class="div" style="margin-top: 10pt;">
 							<a href="javascript:leer_mas_movil();">[ + ] Leer m&aacute;s informaci&oacute;n</a>
 						</div>
+						<noscript>
+							<div class="rojo texto_cen" style="margin-bottom: 10pt;">
+								Debe activar javascript para ver la informaci&oacute;n
+							</div>
+						</noscript>
 						<div id="mas_info_movil" class="texto_mas div">
 							<?php if (!$contenido->textoMovil) 
 									echo $contenido->texto_procesado_movil($contenido->texto, false, $i); ?>
@@ -159,6 +181,11 @@
 								<a href="javascript:leer_pie_movil();">[ + ] Leer m&aacute;s 
 										informaci&oacute;n</a>
 							</div>
+							<noscript>
+								<div class="rojo texto_cen" style="margin-bottom: 10pt;">
+									Debe activar javascript para ver la informaci&oacute;n
+								</div>
+							</noscript>
 							<div id="mas_info_movil2" class="texto_mas div" style="margin-top: 5pt;">
 								<?php echo $contenido->texto_procesado_movil($contenido->pie, false, $i); ?>
 							</div>

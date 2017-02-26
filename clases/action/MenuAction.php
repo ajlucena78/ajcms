@@ -13,7 +13,10 @@
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (!isset($_GET['idPadre']) and !isset($_POST['idPadre']))
 			{
 				$this->idPadre = 0;

@@ -73,11 +73,11 @@
         </action>
     </package>
 	<package name="imagen">
-		<action name="ver_imagen" method="show" class="imagenAction" frame="index">
+		<action name="ver_imagen" method="show" class="contenidoImagenAction" frame="index">
             <result name="success">imagen.php</result>
             <result name="error">error.php</result>
         </action>
-        <action name="sitemap-imagenes" method="sitemap" class="imagenAction">
+        <action name="sitemap-imagenes" method="sitemap" class="contenidoImagenAction">
             <result name="success">sitemap-imagenes.php</result>
             <result name="error">error.php</result>
         </action>
@@ -246,4 +246,10 @@
             <result name="error">inicio-sesion.php</result>
         </action>
 	</package>
+	<package name="archivo">
+		<action name="descarga-archivo" method="descarga" class="contenidoArchivoAction">
+            <result name="success">descarga.php</result>
+            <result name="error">error.php</result>
+        </action>
+    </package>
 </packages>

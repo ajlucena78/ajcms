@@ -19,7 +19,6 @@
 	<service id="contenidoEnlaceService" class="ContenidoEnlaceService" />
 	<service id="contenidoOfertaService" class="ContenidoOfertaService" />
 	<service id="contenidoCorreoService" class="ContenidoCorreoService" />
-	<service id="imagenService" class="ImagenService" />
 	<service id="noticiaService" class="NoticiaService" />
 	<service id="usuarioService" class="UsuarioService" />
 	<service id="contenidoImagenService" class="ContenidoImagenService" />
@@ -30,6 +29,7 @@
 	<service id="correoService" class="CorreoService" />
 	<service id="contenidoOfertaService" class="ContenidoOfertaService" />
 	<service id="permisoService" class="PermisoService" />
+	<service id="contenidoArchivoService" class="ContenidoArchivoService" />
 	<!-- Actions -->
 	<action id="contenidoAction" class="ContenidoAction">
 		<service ref="menuService" />
@@ -41,12 +41,10 @@
 		<service ref="contenidoTextoService" />
 		<service ref="contenidoCorreoService" />
 		<service ref="contenidoEnlaceService" />
-		<service ref="imagenService" />
+		<service ref="contenidoArchivoService" />
     </action>
     <action id="contenidoTextoAction" class="ContenidoTextoAction"></action>
-    <action id="contenidoEnlaceAction" class="ContenidoEnlaceAction">
-    	<service ref="contenidoEnlaceService" />
-    </action>
+    <action id="contenidoEnlaceAction" class="ContenidoEnlaceAction"></action>
 	<action id="contenidoCorreoAction" class="ContenidoCorreoAction"></action>
     <action id="contenidoOfertaAction" class="ContenidoOfertaAction">
 		<service ref="contenidoOfertaService" />
@@ -57,8 +55,7 @@
 		<service ref="usuarioService" />
 		<service ref="contenidoTextoService" />
     </action>
-    <action id="imagenAction" class="ImagenAction">
-		<service ref="imagenService" />
+    <action id="contenidoImagenAction" class="ContenidoImagenAction">
 		<service ref="menuService" />
 		<service ref="contenidoImagenService" />
     </action>
@@ -84,5 +81,8 @@
 		<service ref="correoService" />
 		<service ref="listaCorreoService" />
 		<service ref="usuarioService" />
+    </action>
+    <action id="contenidoArchivoAction" class="ContenidoArchivoAction">
+    	<service ref="contenidoArchivoService" />
     </action>
 </context>

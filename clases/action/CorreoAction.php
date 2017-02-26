@@ -9,7 +9,10 @@
 		
 		public function email()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			$_GET['email'] = trim($_GET['email']);
 			$correo = new Correo();
 			$correo->email_correo = $_GET['email'];
@@ -37,7 +40,10 @@
 		
 		public function ver_email()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (!isset($_GET['id']) or !$_GET['id'])
 			{
 				$this->error = 'Debe indicar el ID del email que desea buscar';
@@ -60,7 +66,10 @@
 		
 		public function baja()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id_correo = $_POST['id'];
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)
@@ -130,7 +139,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_POST['id']) and $_POST['id'])
 			{
 				$_GET['id'] = $_POST['id'];
@@ -170,7 +182,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id_correo = $_POST['id'];
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)

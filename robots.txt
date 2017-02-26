@@ -1,7 +1,10 @@
 User-Agent: *
 Disallow: /mas-fotos?
-Disallow: /adm/
 Disallow: /clases/
 Disallow: /config/
 Disallow: /temporal/
 Disallow: /view/
+Disallow: /res/css/
+Disallow: /res/flash/
+Disallow: /res/imagenes/
+Disallow: /res/js/

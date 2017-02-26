@@ -11,6 +11,7 @@
 		protected $menus;
 		protected $usuario;
 		protected $privado;
+		protected $archivos;
 		
 		public function __construct($datos = null)
 		{
@@ -20,6 +21,7 @@
 			$this->fk['videos'] = new FK('ContenidoVideo', OneToMany, 'idContenido', null, 'orden');
 			$this->fk['menus'] = new FK('Menu', OneToMany, 'idContenido');
 			$this->fk['usuario'] = new FK('Usuario', ManyToOne, 'idUsuario');
+			$this->fk['archivos'] = new FK('ContenidoArchivo', OneToMany, 'idContenido');
 		}
 		
 		public function enlace()

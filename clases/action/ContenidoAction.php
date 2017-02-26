@@ -7,10 +7,9 @@
 		protected $contenidoTextoService;
 		protected $contenidoCorreoService;
 		protected $contenidoEnlaceService;
-		protected $usuarioService;
 		protected $contenidoImagenService;
-		protected $contenidoVideoService;
-		protected $imagenService;
+		protected $contenidoArchivoService;
+		protected $usuarioService;
 		protected $contenido;
 		protected $menus;
 		protected $menuContenido;
@@ -28,7 +27,7 @@
 			if (isset($_GET['permalink']) and $_GET['permalink'] and !isset($_GET['referencia']))
 			{
 				//mediante el permalink
-				$_GET['permalink'] = utf8_decode($_GET['permalink']);
+				$_GET['permalink'] = $_GET['permalink'];
 				if (substr($_GET['permalink'], strlen($_GET['permalink']) - 1, 1) == "/")
 					$_GET['permalink'] = substr($_GET['permalink'], 0, strlen($_GET['permalink']) - 1);
 				$contenido = new Contenido();
@@ -42,9 +41,9 @@
 				if (!$this->contenido)
 				{
 					//se compruueba si es una imagen
-					$this->imagen = new Imagen();
+					$this->imagen = new ContenidoImagen();
 					$this->imagen->permalink = $_GET['permalink'];
-					$this->imagen = $this->imagenService->find($this->imagen);
+					$this->imagen = $this->contenidoImagenService->find($this->imagen);
 					if (!isset($this->imagen[0]) or !$this->imagen[0])
 					{
 						$this->error = 'No se encuentra el contenido: ' . $_GET['permalink'];
@@ -58,14 +57,14 @@
 						$this->titulo = $this->imagen->titulo;
 						//se carga el contenido si estuviera asociado a uno de tipo texto
 						$this->contenido = $this->imagen->contenido;
-						if ($this->contenido and $this->contenido[0] and $this->contenido[0]->tipo == CONTENIDO_TEXTO)
+						if ($this->contenido and $this->contenido and $this->contenido->tipo == CONTENIDO_TEXTO)
 						{
-							if ($this->contenido[0]->privado)
+							if ($this->contenido->privado)
 							{
 								//si la imagen pertenece a una página privada se comprueba si el usuario está logado
 								$this->usuarioService->check_socio();
 							}
-							$this->contenido = $this->contenidoTextoService->findById($this->contenido[0]->idContenido);
+							$this->contenido = $this->contenidoTextoService->findById($this->contenido->idContenido);
 						}
 						else
 						{
@@ -286,7 +285,10 @@
 		
 		public function baja()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_POST['id']) and $_POST['id'] > 0)
 				$id = $_POST['id'];
 			elseif (isset($_GET['id']) and $_GET['id'] > 0)

@@ -702,7 +702,9 @@
 			}
 			$model = null;
 			if ($registro = $consulta->lee_registro())
+			{
 				$model = new $clase($registro);
+			}
 			$consulta->libera();
 			return $model;
 		}

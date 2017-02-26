@@ -30,7 +30,10 @@
 		
 		public function consulta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			if (isset($_GET['descripcion']))
 				$_SESSION['criterios']['descripcion_ofertas'] = $_GET['descripcion'];
 			elseif (!isset($_SESSION['criterios']['descripcion_ofertas']))
@@ -51,7 +54,10 @@
 		
 		public function alta()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			$this->oferta = new ContenidoOferta($_POST);
 			if (isset($_POST['guardar']))
 			{
@@ -75,7 +81,10 @@
 		
 		public function edicion()
 		{
-			$this->usuarioService->check_usuario();
+			if (!$this->usuarioService->check_usuario())
+			{
+				return 'inicio-sesion-adm';
+			}
 			ini_set('max_execution_time', '1800');
 			ini_set('upload_max_filesize', '8M');
 			ini_set('post_max_size', '8M');
@@ -193,7 +202,8 @@
 						$campos['alineamiento'] = $_POST['alineamiento'];
 						$campos['tamano'] = $_POST['tamano'];
 						$this->imagen = new ContenidoImagen($campos);
-						$this->imagen->idContenido = $_POST['id'];
+						$this->imagen->contenido = new Contenido();
+						$this->imagen->contenido->idContenido = $_POST['id'];
 						$this->imagen->ampliable((isset($_POST['ampliable']) 
 								and $_POST['ampliable']) ? '1' : '0');
 						$this->imagen->tmp_dir($_FILES['imagen']['tmp_name']);
@@ -216,7 +226,7 @@
 							return 'error';
 						}
 						$this->mensaje = 'La imagen ha sido subida correctamente';
-						$this->imagen = new Imagen();
+						$this->imagen = new ContenidoImagen();
 					}
 				}
 				else

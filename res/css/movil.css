@@ -281,6 +281,10 @@ textarea
 
 #preface
 {
-	background: url('../imagenes/web/spain-m.png') repeat-x top;
 	min-height: 10px;
+}
+
+.rojo
+{
+	color: red;
 }

@@ -22,10 +22,8 @@
 				if (!$imagen)
 					break;
 				$directorio = floor($imagen->idImagen / 1000);
-				$imagenFile = $rutaFisica . "res/upload/" . $directorio . "/" . $imagen->idImagen . "." 
-						. $imagen->extension;
-				$archivoOriginal = $rutaFisica . "res/upload/" . $directorio . "/original_" . $imagen->idImagen 
-						. "." . $imagen->extension;
+				$imagenFile = $imagen->ruta();
+				$archivoOriginal = $imagen->ruta(true);
 				//pintar la imagen o imágenes
 				//cuantas imágenes pintar en la capa contando todas las consecutivas y pintar así la capa
 				$nImagenesPintar = 0;
@@ -54,7 +52,7 @@
 					if (file_exists($archivoOriginal))
 					{
 						$ampliable = true;
-						$htmlImagenAux .= "<a href=\"" . $ruta . "?action=ver_img&amp;id=" . $imagen->idImagen . "\">";
+						$htmlImagenAux .= "<a href=\"" . $imagen->enlace . "\">";
 					}
 					list($width_img, $height_img) = getimagesize($imagenFile);
 					if (is_object($imagen) and $imagen->alineamiento != 2)
@@ -67,8 +65,7 @@
 					else
 						$alineamiento = '';
 					$htmlImagenAux .= "<img style=\"border: 0px; margin: 2px;$alineamiento\" src=\"" . 
-							$ruta . "res/upload/" . $directorio . "/" . $imagen->idImagen . "." . 
-							$imagen->extension . "\" alt=\"" . formato_html($imagen->titulo) . "\" />";
+							$imagen->url() . "\" alt=\"" . formato_html($imagen->titulo) . "\" />";
 					if ($ampliable)
 						$htmlImagenAux .= "</a>";
 					$htmlImagen .= $htmlImagenAux . "\n";
@@ -79,11 +76,8 @@
 						$imagen = $imagenes[$i];
 						if (!$imagen)
 							break;
-						$directorio = floor($imagen->idImagen / 1000);
-						$imagenFile = $rutaFisica . "res/upload/" . $directorio . "/" . $imagen->idImagen . "." 
-								. $imagen->extension;
-						$archivoOriginal = $rutaFisica . "res/upload/" . $directorio . "/original_" 
-								. $imagen->idImagen . "." . $imagen->extension;
+						$imagenFile = $imagen->ruta();
+						$archivoOriginal = $imagen->ruta(true);
 					}
 				}
 				$htmlImagen .= "\n";

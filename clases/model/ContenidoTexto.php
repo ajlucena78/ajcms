@@ -11,17 +11,15 @@
 		protected $textoMovil;
 		protected $pieMovil;
 		
-		private function imagen($imagen, & $contImg, $rutaFisica, $ruta)
+		private function imagen($imagen, & $contImg = 0, $rutaFisica = null, $ruta = null)
 		{
 			$contImg++;
 			$directorio = floor($imagen->idImagen / 1000);
-			$archivoOriginal = $rutaFisica . '/res/upload/' . $directorio . '/original_' . $imagen->idImagen 
-					. '.' . $imagen->extension;
+			$archivoOriginal = $imagen->ruta(true);
 			$htmlImagen = '';
 			if (file_exists($archivoOriginal))
 			{
-				$rutaImagen = $rutaFisica . '/res/upload/' . $directorio . '/' . $imagen->idImagen . '.' 
-						. $imagen->extension;
+				$rutaImagen = $imagen->ruta();
 				list($width_img, $height_img) = @getimagesize($rutaImagen);
 				$htmlImagenAux = '';
 				if ($height_img <= ALTO_IMG)
@@ -30,15 +28,13 @@
 				}
 				$htmlImagenAux = '<a href="' . $imagen->enlace() . '#verimagen" onclick=\'ver_imagen(' 
 						. $imagen->idImagen . '); return false;\'>';
-				$htmlImagenAux .= '<img src="' . $ruta . 'res/upload/' . $directorio . '/' 
-						. $imagen->idImagen . '.' . $imagen->extension . '" alt="' 
-						. formato_html($imagen->titulo) . '" title="' . formato_html($imagen->titulo) 
-						. '" style="width: 100%;" />';
+				$htmlImagenAux .= '<img src="' . $imagen->url() . '" alt="' . formato_html($imagen->titulo) 
+						. '" title="' . formato_html($imagen->titulo) . '" style="width: 100%;" />';
 				$htmlImagenAux .= '</a>';
 				$htmlImagenAux .= '<div style="clear: left;"></div>';
 				/*
 				$htmlImagenAux .= '<div style="width: 20%; text-align: center; font-size: 180%;'
-						. ' float: left; padding-top: 6px; color: #AAA;"><strong>' . ++$contImg 
+						. ' float: left; padding-top: 6px; color: #AAA;"><strong>' . $contImg 
 						. '</strong></div>';
 				*/
 				$tituloCortado = substr($imagen->titulo, 0, TITULO_IMG);
@@ -75,18 +71,15 @@
 				$htmlImagen .= '</div>';
 				//código js
 				$htmlImagen .= '<script type="text/javascript"><!-- ' . "\n";
-				$htmlImagen .= 'imagenes[imagenes.length] = new Imagen("' . $ruta . 'res/upload/' 
-						. $directorio . '/original_' . $imagen->idImagen . '.' . $imagen->extension 
-						. '", "' . formato_html($imagen->titulo) . '", "' . $ruta 
-						. 'res/upload/' . $directorio . '/' . $imagen->idImagen . '.' 
-						. $imagen->extension . '", ' . $imagen->idImagen . ');';
+				$htmlImagen .= 'imagenes[imagenes.length] = new Imagen("' . $imagen->url(true) . '", "' 
+						. formato_html($imagen->titulo) . '", "' . $imagen->url() . '", ' . $imagen->idImagen 
+						. ');';
 				$htmlImagen .= "\n" . ' //--></script>';
 			}
 			else
 			{
-				$htmlImagen .= '<img src="' . $ruta . 'res/upload/' . $directorio . '/' . $imagen->idImagen 
-						. '.' . $imagen->extension . '" alt="' 
-						. formato_html($imagen->titulo) . '" style="width: ' . $imagen->tamano 
+				$htmlImagen .= '<img src="' . $imagen->url() . '" alt="' . formato_html($imagen->titulo) 
+						. '" style="width: ' . $imagen->tamano 
 						. '%; margin-top: 4pt; margin-bottom: 4pt;" title="' 
 						. formato_html($imagen->titulo) . '"/><br />' . formato_html($imagen->titulo);
 				$htmlImagen .= '<div style="clear: both;"></div>';
@@ -105,10 +98,8 @@
 			$i = $contImg;
 			if ($html)
 			{
-				$html = str_replace('<p>', '<div style="height: 10px; clear: both;"><!-- capa salto --></div><div>'
-						, $html);
-				$html = str_replace('<p ', '<div style="height: 10px; clear: both;"><!-- capa salto --></div><div '
-						, $html);
+				$html = str_replace('<p>', '<div style="height: 10px; clear: both;"><!-- capa salto --></div><div>', $html);
+				$html = str_replace('<p ', '<div style="height: 10px; clear: both;"><!-- capa salto --></div><div ', $html);
 				$html = str_replace('/p>', '/div>', $html);
 				$imagenes = $this->imagenes();
 				$pos = 0;
@@ -375,9 +366,7 @@
 					$pos = strpos($html, '[imagen]', $pos);
 					if ($pos === false)
 						break;
-					$directorio = floor($imagen->idImagen / 1000);
-					$rutaImagen = $rutaFisica . '/res/upload/' . $directorio . '/' . $imagen->idImagen 
-							. '.' . $imagen->extension;
+					$rutaImagen = $imagen->ruta();
 					//pintar la imagen o imágenes
 					//cuantas imágenes pintar en la capa contando todas las consecutivas y pintar así la capa
 					$nImagenesPintar = 0;
@@ -431,10 +420,8 @@
 			$ruta = URL_APP;
 			$rutaFisica = APP_ROOT;
 			$directorio = floor($imagen->idImagen / 1000);
-			$rutaImagen = $rutaFisica . '/res/upload/' . $directorio . '/' . $imagen->idImagen . '.' 
-					. $imagen->extension;
-			$ampliable = file_exists($rutaFisica . '/res/upload/' . $directorio . '/original_' 
-					. $imagen->idImagen . '.' . $imagen->extension);
+			$rutaImagen = $imagen->ruta();
+			$ampliable = file_exists($imagen->ruta(true));
 			list($w, $h) = @getimagesize($rutaImagen);
 			if ($ampliable)
 			{
@@ -455,15 +442,15 @@
 				$html .= '<div id="foto_' . $contImg . '" class="foto">';
 				$html .= '<a href="' . $ruta . $imagen->enlace() . '" target="_blank">';
 			}
-			$html .= '<img src="' . $ruta . 'res/upload/' . $directorio . '/' . $imagen->idImagen . '.' 
-					. $imagen->extension . '" alt="' . formato_html($imagen->titulo) . '" style="width: ' 
-					. $tam . '%; ' . $style . '" />';
+			$html .= '<img src="' . $imagen->url() . '" alt="' . formato_html($imagen->titulo) 
+					. '" style="width: ' . $tam . '%; ' . $style . '" />';
 			if ($ampliable)
 			{
 				$tituloCortado = substr($imagen->titulo, 0, TITULO_IMG_MOVIL);
 				if (strlen($imagen->titulo) > TITULO_IMG_MOVIL)
 					$tituloCortado .= '...';
-				$html .= '<div class="pie_foto"> ' . formato_html($tituloCortado) . '</div></a></div>';
+				//$html .= '<div class="pie_foto"> ' . formato_html($tituloCortado) . '</div></a></div>';
+				$html .= '<div class="pie_foto"><strong>' . ++$contImg . '</strong>. ' . formato_html($tituloCortado) . '</div></a></div>';
 			}
 			else
 			{
@@ -501,6 +488,8 @@
 								, array('id' => $this->idContenido, 'cont' => $contImg), false, 'reloadwin'
 								, true) . '" class="boton">CARGAR M&Aacute;S FOTOS...</a>';
 								$html .= '</div>';
+				$html .= '<noscript><div class="rojo texto_cen" style="margin-bottom: 10pt;">Debe activar';
+				$html .= ' javascript para ver el resto de fotos</div></noscript>';
 			}
 			else
 			{

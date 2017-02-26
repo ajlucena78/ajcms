@@ -6,7 +6,9 @@
 			<loc><?php
 					echo HOST_APP . URL_APP;
 					if ($contenido->permalink)
-						echo utf8_encode($contenido->permalink);
+					{
+						echo $contenido->permalink;
+					}
 					else
 						echo "?referencia=" . $contenido->referencia;
 			?></loc>

@@ -1,4 +1,4 @@
-<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />
 <title><?php
 	if (isset($enlace))
 		echo formato_html($enlace->h1);

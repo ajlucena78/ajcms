@@ -109,9 +109,8 @@
 			<hr />
 		</div>
 		<div style="float: left; width: 25%;">
-			<img src="<?php echo URL_RES; ?>upload/<?php echo $directorio; ?>/<?php 
-					echo $imagen->idImagen; ?>.<?php echo $imagen->extension; ?>"  
-					alt="<?php echo formato_html($imagen->titulo); ?>" style="width: 120px; height: 100px;" />
+			<img src="<?php echo $imagen->url(); ?>" alt="<?php echo formato_html($imagen->titulo); ?>" 
+					style="width: 120px; height: 100px;" />
 			<br />
 			Posici&oacute;n: <strong><?php echo $imagen->orden; ?></strong>
 		</div>

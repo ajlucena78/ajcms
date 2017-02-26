@@ -124,6 +124,11 @@
 			header('Location:' . $action);
 		}
 	}
+	elseif ($view and isset($actionPackage[$view]))
+	{
+		//se llama directamente a un action concreto con el nombre del resultado devuelto
+		header('Location:' . URL_APP . $view);
+	}
 	elseif (isset($_SESSION['HTTP_REFERER']) and $_SESSION['HTTP_REFERER'])
 	{
 		header('Location:' . $_SESSION['HTTP_REFERER']);
