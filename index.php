@@ -75,7 +75,8 @@
 	}
 	define('ACTION', $_GET['action']);
 	define('PACKAGE', $actionPackage['package']);
-	$view = $action->$actionPackage['method']();
+	$method = $actionPackage['method'];
+	$view = $action->$method();
 	if ($view !== null and isset($actionPackage['results'][$view]['ruta']) 
 			and $actionPackage['results'][$view]['ruta'])
 	{

@@ -215,7 +215,7 @@ class EnvioCorreoService extends Service
 		$correo = $model->contenido;
 		$asunto = stripslashes($correo->descripcion);
 		$mensaje = stripslashes($mensaje);
-		$config = new ConfiguracionModel($this->da);
+		$config = new Configuracion($this->da);
 		$config->buscador('mensajes_enviados_dia');
 		if (!$config->lee_configuracion())
 		return false;
